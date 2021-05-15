@@ -22,6 +22,7 @@ const login = () => {
         
         <TouchableHighlight
           style={styles.button}
+          onPress={()=>{}}
         >
           <Text
             style={styles.text_content}
@@ -30,11 +31,11 @@ const login = () => {
 
         <TouchableHighlight
           style={styles.button}
+          onPress={()=>{}}
         >
-          <Button
-            title="Admin"
-            onPress={()=>{}}
-          />
+          <Text
+            style={styles.text_content}
+          >Admin</Text>
         </TouchableHighlight>
       </View>
     </View>

@@ -6,27 +6,32 @@ const styles = StyleSheet.create({
     },
     WelcomeLogo: {
       height: dimen.height * 2/3,
-      resizeMode: 'center',
+      resizeMode: 'cover',
     },
     content:{
       height: dimen.height * 1/3,
       backgroundColor: '#FBFDFE',
       fontFamily: 'Roboto',
-      paddingLeft: 40
     },
     text_title:{
       fontWeight: 'bold',
       fontSize: 25,
+      paddingLeft:20,
     },
     text_content:{
       fontSize: 18,
     },
+    text_welcome:{
+      fontSize: 18,
+      marginLeft:20
+    },
     button:{
+      alignSelf:'center',
       alignItems:'center',
       justifyContent:'center',
-      margin:20,
-      maxWidth:200,
-      height:40,
+      marginTop:20,
+      width:200,
+      height:50,
       borderRadius:20,
       backgroundColor:'#9A79FE'
     }

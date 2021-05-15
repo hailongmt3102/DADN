@@ -14,7 +14,7 @@ function welcome () {
           Xin chào,
           {"\n\n"}
         </Text>
-        <Text style={styles.text_content}>
+        <Text style={styles.text_welcome}>
           Chào mừng bạn đến với Smart Farm
         </Text>
       </View>
