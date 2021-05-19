@@ -3,13 +3,14 @@ from django.http import HttpResponse
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from rest_framework import permissions
 from .models import *
 
 from .serializers import *
 
 
 class FarmApi(APIView):
+    permission_classes = [permissions.IsAuthenticated]
 
     serializer_class = FarmFieldSerializer
 
