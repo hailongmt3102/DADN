@@ -21,6 +21,8 @@ class Field(models.Model):
     )
     area_width = models.FloatField(
         validators=[MinValueValidator(0)])
+    field_farm = models.ForeignKey(
+        to="Farm", related_name='farm_of_field', on_delete=models.CASCADE, null=False)
 
 
 class Crop(models.Model):
@@ -30,6 +32,7 @@ class Crop(models.Model):
         to="Field", related_name='field_of_crop', on_delete=models.CASCADE, null=False)
     crop_production = models.ForeignKey(
         to="Production", related_name='production_of_crop', on_delete=models.CASCADE, null=False)
+    harvested = models.BooleanField(default=False)
 
 
 class WateringHistory(models.Model):
