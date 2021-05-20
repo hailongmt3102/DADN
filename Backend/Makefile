@@ -4,4 +4,4 @@ all:
 	python manage.py runserver
 
 clean:
-	rm -rf */migrations db.sqlite3
+	rm -rf  db.sqlite3
