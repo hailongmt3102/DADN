@@ -4,7 +4,7 @@ import { View, Image, Text, Button, TouchableHighlight } from 'react-native';
 import styles from '../styles/st_welcome';
 const img = require('../images/Login.png');
 
-const login = () => {
+const login = ({navigation}) => {
   return(
     <View style={styles.container}>
       <Image
@@ -22,7 +22,7 @@ const login = () => {
         
         <TouchableHighlight
           style={styles.button}
-          onPress={()=>{}}
+          onPress={()=>{navigation.push('UserLogin')}}
         >
           <Text
             style={styles.text_content}
@@ -31,7 +31,7 @@ const login = () => {
 
         <TouchableHighlight
           style={styles.button}
-          onPress={()=>{}}
+          onPress={()=>{navigation.push('AdminLogin')}}
         >
           <Text
             style={styles.text_content}
