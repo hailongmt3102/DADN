@@ -1,10 +1,13 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
+def upload_to(instance, filename):
+    return 'farm_image/{filename}'.format(filename=filename)
 
 class Production(models.Model):
+
     production_name = models.CharField(max_length=50, default="")
     production_image_address = models.CharField(max_length=50, default="")
     production_period = models.IntegerField(default=0)
@@ -12,6 +15,8 @@ class Production(models.Model):
 
 class Farm(models.Model):
     farm_name = models.CharField(max_length=50, default="")
+    farm_image = models.ImageField(
+        _("Image"), upload_to=upload_to, default='farm_image/default.jpg')
 
 
 class Field(models.Model):

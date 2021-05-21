@@ -8,7 +8,8 @@ class FarmSerializer(serializers.ModelSerializer):
         model = Farm
         fields = [
             "id",
-            "farm_name"
+            "farm_name",
+            "farm_image"
         ]
 
 class FieldSerializer(serializers.ModelSerializer):
