@@ -22,14 +22,14 @@ class Field(models.Model):
     area_width = models.FloatField(
         validators=[MinValueValidator(0)])
     field_farm = models.ForeignKey(
-        to="Farm", related_name='farm_of_field', on_delete=models.CASCADE, null=False)
+        to="Farm", related_name='fields_of_farm', on_delete=models.CASCADE, null=False)
 
 
 class Crop(models.Model):
-    crop_start_date = models.DateField()
-    crop_harvest_date = models.DateField()
+    crop_start_date = models.DateTimeField()
+    crop_harvest_date = models.DateTimeField()
     crop_field = models.ForeignKey(
-        to="Field", related_name='field_of_crop', on_delete=models.CASCADE, null=False)
+        to="Field", related_name='crops_of_field', on_delete=models.CASCADE, null=False)
     crop_production = models.ForeignKey(
         to="Production", related_name='production_of_crop', on_delete=models.CASCADE, null=False)
     harvested = models.BooleanField(default=False)
@@ -39,8 +39,8 @@ class WateringHistory(models.Model):
     water_amount = models.FloatField(
         validators=[MinValueValidator(0)]
     )
-    watering_start_time = models.DateField()
-    watering_end_time = models.DateField()
+    watering_start_time = models.DateTimeField()
+    watering_end_time = models.DateTimeField()
     watering_crop = models.ForeignKey(
         to="Crop",
         related_name='water_for_crop',
@@ -53,4 +53,4 @@ class SensorData(models.Model):
     ground_humidity = models.FloatField()
     air_humidity = models.FloatField()
     air_temperature = models.FloatField()
-    record_time = models.DateField()
+    record_time = models.DateTimeField()
