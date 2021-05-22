@@ -22,7 +22,7 @@ const login = ({navigation}) => {
         
         <TouchableHighlight
           style={styles.button}
-          onPress={()=>{navigation.push('UserLogin')}}
+          onPress={()=>{navigation.push('UserLoginScreen')}}
         >
           <Text
             style={styles.text_content}
@@ -31,7 +31,7 @@ const login = ({navigation}) => {
 
         <TouchableHighlight
           style={styles.button}
-          onPress={()=>{navigation.push('AdminLogin')}}
+          onPress={()=>{navigation.push('AdminLoginScreen')}}
         >
           <Text
             style={styles.text_content}

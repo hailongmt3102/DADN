@@ -3,10 +3,11 @@ const dimen = Dimensions.get('window');
 const styles = StyleSheet.create({
     container: {
       height: dimen.height,
+      backgroundColor: '#FBFDFE'
     },
     WelcomeLogo: {
       height: dimen.height * 2/3,
-      resizeMode: 'cover',
+      resizeMode: 'contain',
     },
     content:{
       height: dimen.height * 1/3,
