@@ -19,7 +19,7 @@ const App = () => {
       ref={navigationRef}
     >
       <Stack.Navigator
-        initialRouteName='Welcome'
+        initialRouteName='WelcomScreen'
       >
         <Stack.Screen
           name="WelcomeScreen"

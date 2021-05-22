@@ -1,19 +1,21 @@
 import axios from 'axios';
 import * as NavigationRoot from './src/NavigationRoot';
-import {AsyncStorage} from '@react-native-community/async-storage';
+
+import {get_access_token, set_access_token, get_refresh_token, set_refresh_token} from './src/AsyncStorage';
 
 const baseURL = 'http://localhost:8000/';
 
-const axiosInstane = axios.create({
+const axiosInstance = axios.create({
     baseURL: baseURL,
     timeout: 5000,
     headers: {
-        Authorization: AsyncStorage.getItem('access_token') ?
-            'DADNJWT ' + AsyncStorage.getItem('access_token') : null,
+        Authorization: get_access_token() ?
+            'JWT ' + get_access_token() : null,
         'Content-Type': 'application/json',
         accept: 'application/json'
     }
 })
+
 axiosInstance.interceptors.response.use(
 	(response) => {
 		return response;
@@ -43,7 +45,7 @@ axiosInstance.interceptors.response.use(
 			error.response.status === 401 &&
 			error.response.statusText === 'Unauthorized'
 		) {
-			const refreshToken = AsyncStorage.getItem('refresh_token');
+			const refreshToken = get_refresh_token();
 
 			if (refreshToken) {
 				const tokenParts = JSON.parse(atob(refreshToken.split('.')[1]));
@@ -56,13 +58,13 @@ axiosInstance.interceptors.response.use(
 					return axiosInstance
 						.post('/token/refresh/', { refresh: refreshToken })
 						.then((response) => {
-							AsyncStorage.setItem('access_token', response.data.access);
-							AsyncStorage.setItem('refresh_token', response.data.refresh);
+							set_access_token(response.data.access);
+							set_refresh_token(response.data.refresh);
 
 							axiosInstance.defaults.headers['Authorization'] =
-								'DADNJWT ' + response.data.access;
+								'JWT ' + response.data.access;
 							originalRequest.headers['Authorization'] =
-								'DADNJWT ' + response.data.access;
+								'JWT ' + response.data.access;
 
 							return axiosInstance(originalRequest);
 						})

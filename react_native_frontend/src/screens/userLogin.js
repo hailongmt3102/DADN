@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, SafeAreaView, TextInput, TouchableHighlight } from 'react-native';
+import { View, Text, SafeAreaView, TextInput, TouchableHighlight, Alert } from 'react-native';
 
 import styles from '../styles/st_login';
 
 import axiosInstane from  '../../axios';
 
-import {AsyncStorage} from '@react-native-community/async-storage';
+import {set_access_token, set_refresh_token} from '.././AsyncStorage' 
+
+import {navigate} from '../NavigationRoot';
 
 function userLogin ({navigation}){
   const formInfo = {
@@ -20,14 +22,30 @@ function userLogin ({navigation}){
       password:formInfo.password
     })
     .then((response) => {
-      console.log(response);
-      AsyncStorage.setItem('access_token', response.data.access);
-      AsyncStorage.setItem('refresh_token', response.data.refresh);
-      axiosInstane.defaults.header['Authorization'] = 
-        'DADNJWT ' + AsyncStorage.getItem('access_token');
+      set_access_token(response.data.access);
+      set_refresh_token(response.data.refresh);
+      axiosInstane.defaults.headers['Authorization'] = 
+        'JWT ' + response.data.access;
+      // login successfull
+      // moving to home page
+      // navigate('HomeScreen',{})
     })
     .catch((error)=>{
-      console.log(error)
+      console.log(error);
+      console.log("login fail")
+      // Alert.alert(
+      //   "Báo lỗi",
+      //   "Thông tin đăng nhập không hợp lệ",
+      //   [
+      //     {
+      //       text: "Đóng",
+      //       style: "cancel"
+      //     }
+      //   ]
+      // )
+      alert("Thông tin đăng nhập sai")
+      // login fail 
+
     })
   }
 
