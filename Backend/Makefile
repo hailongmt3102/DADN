@@ -1,7 +1,7 @@
 all:
-	python3 manage.py makemigrations
-	python3 manage.py migrate
-	python3 manage.py runserver
+	python manage.py makemigrations
+	python manage.py migrate
+	python manage.py runserver
 
 clean:
 	rm -rf  db.sqlite3

@@ -1,18 +1,16 @@
 from rest_framework import serializers
 from .models import MyUser
+from Api.models import Farm
 
+class UserCreateSerializer(serializers.ModelSerializer):
 
-class CustomUserSerializer(serializers.ModelSerializer):
-    """
-    Currently unused in preference of the below.
-    """
     email = serializers.EmailField(required=True)
-    user_name = serializers.CharField(required=True)
+    username = serializers.CharField(required=True)
     password = serializers.CharField(min_length=8, write_only=True)
 
     class Meta:
         model = MyUser
-        fields = ('email', 'user_name', 'password')
+        fields = ('email', 'username', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -21,5 +19,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
         instance = self.Meta.model(**validated_data)
         if password is not None:
             instance.set_password(password)
+        new_farm = Farm()
+        new_farm.save()
+        instance.user_farm = new_farm
         instance.save()
         return instance
+
+class MyUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyUser
+        
