@@ -31,10 +31,14 @@ class Farm(models.Model):
         _("FarmImage"),
         upload_to=upload_farm_iamge,
         default='farm_image/default.jpg'
-        )
-    farm_create_at = models.DateTimeField(default= datetime.now)
+    )
+    farm_create_at = models.DateTimeField(default=datetime.now)
+
     def __str__(self):
         return "Farm_"+str(self.id)
+
+    def __int__(self):
+        return self.id
 
 
 class Field(models.Model):
@@ -47,7 +51,7 @@ class Field(models.Model):
     )
     field_farm = models.ForeignKey(
         to="Farm", related_name='fields_of_farm', on_delete=models.CASCADE, null=False)
-    field_create_at = models.DateTimeField(default= datetime.now)
+    field_create_at = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
         return "Field_"+str(self.id)
@@ -88,6 +92,12 @@ class WateringHistory(models.Model):
         on_delete=models.CASCADE,
         null=False
     )
+    water_pump = models.ForeignKey(
+        to="Pump",
+        related_name='water_of_pump',
+        on_delete=models.CASCADE,
+        null=False
+    )
 
 
 class SensorData(models.Model):
@@ -107,6 +117,54 @@ class SensorData(models.Model):
         on_delete=models.CASCADE,
         null=False
     )
+    data_from_air_sensor = models.ForeignKey(
+        to="AirSensor",
+        related_name='air_sensor',
+        on_delete=models.CASCADE,
+        null=False
+    )
+    data_from_fround_sensor = models.ForeignKey(
+        to="GroundSensor",
+        related_name='ground_sensor',
+        on_delete=models.CASCADE,
+        null=False
+    )
+
 
 class Pump(models.Model):
     pass
+
+    pump_field = models.ForeignKey(
+        to="Field",
+        related_name='pump_of_field',
+        on_delete=models.CASCADE,
+        null=False
+    )
+    def activate(self): pass
+    def deactivate(self): pass
+
+
+class AirSensor(models.Model):
+    pass
+    sensor_field = models.ForeignKey(
+        to="Field",
+        related_name='air_sensor_of_field',
+        on_delete=models.CASCADE,
+        null=False
+    )
+
+    def collect(self):
+        pass
+
+
+class GroundSensor(models.Model):
+    pass
+    sensor_field = models.ForeignKey(
+        to="Field",
+        related_name='ground_sensor_of_field',
+        on_delete=models.CASCADE,
+        null=False
+    )
+
+    def collect(self):
+        pass

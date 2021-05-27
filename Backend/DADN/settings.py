@@ -48,7 +48,10 @@ INSTALLED_APPS = [
     'Farm_api',
     'Field_api',
     'Production_api',
-    'corsheaders'
+    'Sensor_data_api',
+    'Watering_api',
+    'corsheaders',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -181,3 +184,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Media')
 MEDIA_URL = '/Media/'
+
+ASGI_APPLICATION = 'DADN.asgi.application'

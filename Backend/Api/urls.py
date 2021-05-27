@@ -3,5 +3,8 @@ from django.urls import path, include
 urlpatterns = [
     path("farm/", include('Farm_api.urls')),
     path("field/", include('Field_api.urls')),
-    path("production/", include("Production_api.urls"))
+    path("production/", include("Production_api.urls")),
+    path("data/", include("Sensor_data_api.urls")),
+    path("water/", include("Watering_api.urls")),
+    # path("action/")
 ]
