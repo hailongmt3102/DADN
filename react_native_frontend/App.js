@@ -9,18 +9,17 @@ import UserLoginScreen from './src/screens/userLogin';
 import AdminLoginScreen from './src/screens/adminLogin';
 import ForgotPassScreen from './src/screens/forgotPass';
 
-const Stack = createStackNavigator();
+import {navigationRef} from './src/NavigationRoot';
 
+const Stack = createStackNavigator();
 
 const App = () => {
   return(
-    // <View>
-    //   <Welcome></Welcome>
-    // </View>
-    // <welcome></welcome>
-    <NavigationContainer>
+    <NavigationContainer
+      ref={navigationRef}
+    >
       <Stack.Navigator
-        initialRouteName='Welcome'
+        initialRouteName='WelcomScreen'
       >
         <Stack.Screen
           name="WelcomeScreen"
@@ -35,19 +34,19 @@ const App = () => {
         />
 
         <Stack.Screen
-          name="UserLogin"
+          name="UserLoginScreen"
           component={UserLoginScreen}
           options={{title:"Đăng nhập", headerTitle:''}}
         />
 
         <Stack.Screen
-          name="AdminLogin"
+          name="AdminLoginScreen"
           component={AdminLoginScreen}
           options={{title:"Đăng nhập", headerTitle:''}}
         />
 
         <Stack.Screen
-          name="ForgotPass"
+          name="ForgotPassScreen"
           component={ForgotPassScreen}
           options={{title:"Quên mật khẩu", headerTitle:''}}
         />

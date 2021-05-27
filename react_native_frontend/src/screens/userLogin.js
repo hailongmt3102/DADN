@@ -1,73 +1,91 @@
-import React, { Component } from 'react';
-import { View, Image, StyleSheet, Dimensions, Text, SafeAreaView, TextInput, TouchableHighlight } from 'react-native';
+import React from 'react';
+import { View, Text, SafeAreaView, TextInput, TouchableHighlight, Alert } from 'react-native';
 
 import styles from '../styles/st_login';
 
 import axiosInstane from  '../../axios';
 
-class userLogin extends Component{
-  constructor(props){
-    super(props);
-    this.state={
-      email:"",
-      password:"",
-      checklogin:0
-    }
+import {set_access_token, set_refresh_token} from '.././AsyncStorage' 
+
+import {navigate} from '../NavigationRoot';
+
+function userLogin ({navigation}){
+  const formInfo = {
+    email:'',
+    password:''
   }
-  onsubmit=()=>{
-    // this.props.navigation.push('ForgotPass')
+
+  const onsubmit=()=>{
     axiosInstane
-      .post('auth/token/',{
-        email:this.state.email,
-        password:this.state.password
-      })
-      .then((response) => response.json())
-      .then((responseJson) =>{
-        console.log(responseJson)
-      })
-      .catch((error)=>{
-        console.log(error)
-      })
+    .post('auth/token/',{
+      email:formInfo.email,
+      password:formInfo.password
+    })
+    .then((response) => {
+      set_access_token(response.data.access);
+      set_refresh_token(response.data.refresh);
+      axiosInstane.defaults.headers['Authorization'] = 
+        'JWT ' + response.data.access;
+      // login successfull
+      // moving to home page
+      // navigate('HomeScreen',{})
+    })
+    .catch((error)=>{
+      console.log(error);
+      console.log("login fail")
+      // Alert.alert(
+      //   "Báo lỗi",
+      //   "Thông tin đăng nhập không hợp lệ",
+      //   [
+      //     {
+      //       text: "Đóng",
+      //       style: "cancel"
+      //     }
+      //   ]
+      // )
+      alert("Thông tin đăng nhập sai")
+      // login fail 
+
+    })
   }
-  render(){
-    const navigation = this.props.navigation;
-    return(
-      <SafeAreaView>
-      <Text style={styles.title}>
+
+  return(
+    <SafeAreaView>
+    <Text style={styles.title}>
+      Đăng nhập
+    </Text>
+    <TextInput
+      style={styles.text_input}
+      placeholder="Email"
+      onChangeText={(email)=>{formInfo.email = email}}
+    />
+    <TextInput
+      style={styles.text_input}
+      placeholder="Mật khẩu"
+      onChangeText={(password)=>{formInfo.password = password}}
+    />
+    <TouchableHighlight
+      style={styles.button}
+      onPress={onsubmit}
+    >
+      <Text style={styles.innerbtn}>
         Đăng nhập
       </Text>
-      <TextInput
-        style={styles.text_input}
-        placeholder="Email"
-        onChangeText={(email)=>{this.state.email = email}}
-      />
-      <TextInput
-        style={styles.text_input}
-        placeholder="Mật khẩu"
-        onChangeText={(password)=>{this.state.password = password}}
-      />
-      <TouchableHighlight
-        style={styles.button}
-        onPress={this.onsubmit}
-      >
-        <Text style={styles.innerbtn}>
-          Đăng nhập
-        </Text>
-      </TouchableHighlight>
+    </TouchableHighlight>
 
-      <View>
-        <Text style={styles.baseText}>
-          Quên mật khẩu ?  {" "} 
-          <Text style={styles.innerText}
-            onPress={()=>{navigation.push('ForgotPass')}}
-          >
-          Lấy lại mật khẩu
-          </Text>
+    <View>
+      <Text style={styles.baseText}>
+        Quên mật khẩu ?  {" "} 
+        <Text style={styles.innerText}
+          onPress={()=>{navigation.push('ForgotPass')}}
+        >
+        Lấy lại mật khẩu
         </Text>
-      </View>
-    </SafeAreaView>
-    )
-  }
+      </Text>
+    </View>
+  </SafeAreaView>
+  )
 }
+
 
 export default userLogin;
