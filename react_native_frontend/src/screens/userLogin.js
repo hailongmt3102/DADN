@@ -77,7 +77,7 @@ function userLogin ({navigation}){
       <Text style={styles.baseText}>
         Quên mật khẩu ?  {" "} 
         <Text style={styles.innerText}
-          onPress={()=>{navigation.push('ForgotPass')}}
+          onPress={()=>{navigation.push('ForgotPassScreen')}}
         >
         Lấy lại mật khẩu
         </Text>
