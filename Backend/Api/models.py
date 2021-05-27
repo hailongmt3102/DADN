@@ -95,3 +95,18 @@ class SensorData(models.Model):
     air_humidity = models.FloatField()
     air_temperature = models.FloatField()
     record_time = models.DateTimeField()
+    data_crop = models.ForeignKey(
+        to="Crop",
+        related_name='data_of_crop',
+        on_delete=models.CASCADE,
+        null=True
+    )
+    data_field = models.ForeignKey(
+        to="Field",
+        related_name='data_of_field',
+        on_delete=models.CASCADE,
+        null=False
+    )
+
+class Pump(models.Model):
+    pass

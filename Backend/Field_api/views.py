@@ -10,16 +10,16 @@ from .serializers import *
 
 def CustomSerializerFiledApi(_serializer_class):
     pass
+    class FieldApi(APIView):
+        permission_classes = [permissions.IsAuthenticated]
+        serializer_class = _serializer_class
 
-
-class FieldApi(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = FieldSerializer
-
-    def get(self, request, *args, **kargs):
-        print(request.get_full_path().split('/'))
-        queryset = Field.objects.filter(
-            field_farm=request.user.user_farm.id,
-        ).first()
-        datas = self.serializer_class(queryset).data if queryset else {}
-        return Response(datas, status.HTTP_200_OK)
+        def get(self, request, *args, **kargs):
+            print(request.get_full_path().split('/'))
+            queryset = Field.objects.filter(
+                field_farm=request.user.user_farm.id,
+            ).first()
+            datas = self.serializer_class(queryset).data if queryset else {}
+            return Response(datas, status.HTTP_200_OK)
+    
+    return FieldApi

@@ -3,8 +3,15 @@ from rest_framework import serializers
 from Crop_api.serializers import CropSerializers
 
 
+class FieldCropsSerializer(serializers.ModelSerializer):
+    crops_of_field = CropSerializers(many=True)
+    class Meta:
+        model = Field
+        fields = [
+            "crops_of_field"
+        ]
+
 class FieldSerializer(serializers.ModelSerializer):
-    crops_of_field = CropSerializers(many = True)
     class Meta:
         model = Field
         fields = [
@@ -13,7 +20,6 @@ class FieldSerializer(serializers.ModelSerializer):
             "area_length",
             "area_width",
             "field_create_at",
-            "crops_of_field"
         ]
 
 
@@ -49,6 +55,9 @@ class FieldLatestCropSerializer(serializers.BaseSerializer):
         return {
             "id": instance.id,
             "field_location_index": instance.field_location_index,
+            "area_length": instance.area_length,
+            "area_width": instance.area_width,
+            "field_create_at": instance.field_create_at,
             "crops_of_field": CropSerializers(crop).data if crop else {}
         }
 
