@@ -8,8 +8,10 @@ import LoginScreen from './src/screens/login';
 import UserLoginScreen from './src/screens/userLogin';
 import AdminLoginScreen from './src/screens/adminLogin';
 import ForgotPassScreen from './src/screens/forgotPass';
+import HomePageScreen from './src/screens/homePage';
 
 import {navigationRef} from './src/NavigationRoot';
+
 
 const Stack = createStackNavigator();
 
@@ -19,7 +21,7 @@ const App = () => {
       ref={navigationRef}
     >
       <Stack.Navigator
-        initialRouteName='WelcomScreen'
+        initialRouteName='HomePageScreen'
       >
         <Stack.Screen
           name="WelcomeScreen"
@@ -50,9 +52,16 @@ const App = () => {
           component={ForgotPassScreen}
           options={{title:"Quên mật khẩu", headerTitle:''}}
         />
+
+        <Stack.Screen
+          name="HomePageScreen"
+          component={HomePageScreen}
+          options={{title:"🌳   Xin chào !"}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
 
 export default App;
