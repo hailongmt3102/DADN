@@ -3,10 +3,13 @@ import {View, Image, Text, SafeAreaView, StyleSheet, Dimensions, TouchableHighli
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 import {navigate} from '../NavigationRoot';
+import styles from '../styles/st_home';
+
+const defaultImg = require('../images/imageDefault.png')
 
 const tab = createMaterialTopTabNavigator();
 
-function homePageTab(){
+function homePageScreen(){
   return(
     <tab.Navigator>
       <tab.Screen name="Nông trại" component={Your_fame}/>
@@ -21,7 +24,7 @@ const Your_fame=() => {
         <View style={styles.container}>
           <Image
             style={styles.image}
-            source={require('../images/imageDefault.png')}
+            source={defaultImg}
           />
           <View
             style={styles.textline}
@@ -63,9 +66,10 @@ const Your_fame=() => {
           </TouchableHighlight>
           <TouchableHighlight
             style={styles.button}
-            onPress={()=>{}}
+            onPress={navigate("ListFieldsScreen")}  
           >
-            <Text style={styles.innerbtn}>
+            <Text style={styles.innerbtn}
+            >
               Kiểm tra
             </Text>
           </TouchableHighlight>
@@ -94,61 +98,13 @@ const Productions=() => {
     <SafeAreaView>
         <View>  
           <Text>
-            toto: make list her
+            toto: make list here
           </Text>
         </View>
     </SafeAreaView>
   )
 }
 
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
-const styles = StyleSheet.create({
-  container:{
-    backgroundColor:'#FBFDFE',
-    width:width,
-    height:height
-  },
-  image:{
-    height:300,
-    resizeMode:'contain',
-    justifyContent:'center',
-    alignSelf:'center',
-    marginTop:50
-  },
-  textline:{
-    margin:10,
-    marginLeft:20
-  },
-  title:{
-    fontWeight:'bold',
-    fontSize:20,
-  },
-  text_content:{
-    fontSize:20
-  },
-  button:{
-    borderRadius:20,
-    height:40,
-    width:150,
-    alignSelf:'center',
-    backgroundColor:'#9A79FE',
-    paddingLeft:20,
-    paddingRight:20,
-    marginTop:20,
-    justifyContent:'center',
-    textAlign:'center',
-    flexDirection:'row'
-  },
-  innerbtn:{
-    color:'#FFF',
-    fontSize:18,
-    alignSelf:'center'
-  },
-  production_item:{
-    margin:20,
-    backgroundColor:"FFFFFF"
-  }
-})
 
-export default homePageTab;
+
+export default homePageScreen;
