@@ -20,11 +20,5 @@ class AdminWateringHistory(admin.ModelAdmin):pass
 @admin.register(SensorData)
 class AdminSensorData(admin.ModelAdmin):pass
 
-@admin.register(Pump)
-class AdminSensorData(admin.ModelAdmin):pass
-
-@admin.register(AirSensor)
-class AdminSensorData(admin.ModelAdmin):pass
-
-@admin.register(GroundSensor)
+@admin.register(IOdevice)
 class AdminSensorData(admin.ModelAdmin):pass

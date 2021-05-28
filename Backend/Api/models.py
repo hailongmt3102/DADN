@@ -1,8 +1,10 @@
 # from typing_extensions import Required
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models.base import ModelState
 from django.utils.translation import gettext_lazy as _
 from datetime import date, datetime
+from Adafruit_IO import Client
 
 # Create your models here.
 
@@ -42,7 +44,7 @@ class Farm(models.Model):
 
 
 class Field(models.Model):
-    field_location_index = models.IntegerField(unique=True, null=False)
+    field_location_index = models.IntegerField(null=False)
     area_length = models.FloatField(
         validators=[MinValueValidator(0)], default=0
     )
@@ -93,7 +95,7 @@ class WateringHistory(models.Model):
         null=False
     )
     water_pump = models.ForeignKey(
-        to="Pump",
+        to="IOdevice",
         related_name='water_of_pump',
         on_delete=models.CASCADE,
         null=False
@@ -118,53 +120,41 @@ class SensorData(models.Model):
         null=False
     )
     data_from_air_sensor = models.ForeignKey(
-        to="AirSensor",
+        to="IOdevice",
         related_name='air_sensor',
         on_delete=models.CASCADE,
         null=False
     )
-    data_from_fround_sensor = models.ForeignKey(
-        to="GroundSensor",
+    data_from_ground_sensor = models.ForeignKey(
+        to="IOdevice",
         related_name='ground_sensor',
         on_delete=models.CASCADE,
         null=False
     )
+    data_ground_id = models.CharField(max_length= 30)
+    data_air_id = models.CharField(max_length= 30)
 
 
-class Pump(models.Model):
-    pass
-
-    pump_field = models.ForeignKey(
-        to="Field",
-        related_name='pump_of_field',
-        on_delete=models.CASCADE,
-        null=False
-    )
-    def activate(self): pass
-    def deactivate(self): pass
-
-
-class AirSensor(models.Model):
-    pass
-    sensor_field = models.ForeignKey(
+class IOdevice(models.Model):
+    feed_name = models.CharField(max_length=50, null=False)
+    feed_username = models.CharField(max_length=100, null=False)
+    feed_key = models.CharField(max_length=100, null=False)
+    device_field = models.ForeignKey(
         to="Field",
         related_name='air_sensor_of_field',
         on_delete=models.CASCADE,
         null=False
     )
+    output = models.BooleanField(default=False)
+    device_type = models.CharField(max_length=20)
 
     def collect(self):
-        pass
+        aio = Client(self.feed_username, self.feed_key)
 
+        data = aio.receive(self.feed_name)
+        if data:
+            return data
+        return None
 
-class GroundSensor(models.Model):
-    pass
-    sensor_field = models.ForeignKey(
-        to="Field",
-        related_name='ground_sensor_of_field',
-        on_delete=models.CASCADE,
-        null=False
-    )
-
-    def collect(self):
+    def push(self):
         pass
