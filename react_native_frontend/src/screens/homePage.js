@@ -177,4 +177,5 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default homePageTab;
+
+export default homePageScreen;
