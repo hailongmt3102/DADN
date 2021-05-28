@@ -3,14 +3,14 @@ import * as NavigationRoot from './src/NavigationRoot';
 
 import {get_access_token, set_access_token, get_refresh_token, set_refresh_token} from './src/AsyncStorage';
 
-const baseURL = 'http://localhost:8000/';
+export const baseURL = 'http://localhost:8000';
 
-const axiosInstance = axios.create({
+const axiosInstance =  axios.create({
     baseURL: baseURL,
     timeout: 5000,
     headers: {
-        Authorization: get_access_token() ?
-            'JWT ' + get_access_token() : null,
+        // Authorization: get_access_token() ?
+        //     'JWT ' + get_access_token() : null,
         'Content-Type': 'application/json',
         accept: 'application/json'
     }
@@ -22,8 +22,9 @@ axiosInstance.interceptors.response.use(
 	},
 	async function (error) {
 		const originalRequest = error.config;
-
+		
 		if (typeof error.response === 'undefined') {
+			
 			alert(
 				'A server/network error occurred. ' +
 					'Looks like CORS might be the problem. ' +
@@ -31,20 +32,23 @@ axiosInstance.interceptors.response.use(
 			);
 			return Promise.reject(error);
 		}
-
+	
 		if (
 			error.response.status === 401 &&
-			originalRequest.url === baseURL + 'token/refresh/'
+			originalRequest.url === baseURL + '/auth/token/refresh/'
 		) {
+			
 			NavigationRoot.navigate('LoginScreen')
 			return Promise.reject(error);
 		}
-
+		
+		
 		if (
 			error.response.data.code === 'token_not_valid' &&
 			error.response.status === 401 &&
 			error.response.statusText === 'Unauthorized'
 		) {
+			
 			const refreshToken = get_refresh_token();
 
 			if (refreshToken) {
@@ -81,7 +85,7 @@ axiosInstance.interceptors.response.use(
 			}
 		}
 
-		// specific error handling done elsewhere
+		NavigationRoot.navigate('LoginScreen', {})
 		return Promise.reject(error);
 	}
 );

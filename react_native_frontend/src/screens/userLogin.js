@@ -28,7 +28,7 @@ function userLogin ({navigation}){
         'JWT ' + response.data.access;
       // login successfull
       // moving to home page
-      navigate('HomePageScreen',{})
+      // navigate('HomeScreen',{})
     })
     .catch((error)=>{
       console.log(error);
