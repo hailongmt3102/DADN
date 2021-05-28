@@ -9,6 +9,7 @@ import UserLoginScreen from './src/screens/userLogin';
 import AdminLoginScreen from './src/screens/adminLogin';
 import ForgotPassScreen from './src/screens/forgotPass';
 import HomePageScreen from './src/screens/homePage';
+import listFieldsScreen from './src/screens/listFields'
 
 import {navigationRef} from './src/NavigationRoot';
 
@@ -21,7 +22,7 @@ const App = () => {
       ref={navigationRef}
     >
       <Stack.Navigator
-        initialRouteName='HomePageScreen'
+        initialRouteName='WelcomeScreen'
       >
         <Stack.Screen
           name="WelcomeScreen"
@@ -57,6 +58,12 @@ const App = () => {
           name="HomePageScreen"
           component={HomePageScreen}
           options={{title:"🌳   Xin chào !"}}
+        />
+
+        <Stack.Screen
+          name="ListFieldsScreen"
+          component={listFieldsScreen}
+          options={{title:"🌳   Khu vực "}}
         />
       </Stack.Navigator>
     </NavigationContainer>
