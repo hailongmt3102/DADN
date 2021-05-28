@@ -44,10 +44,27 @@ const styles = StyleSheet.create({
     fontSize:18,
     alignSelf:'center'
   },
-  production_item:{
+  list_view_container:{
+    flex:1,
+    padding:10
+  },
+  item_img_and_title:{
     margin:20,
-    backgroundColor:"FFFFFF"
+    backgroundColor:"FFFFFF",
+    flex:1,
+    flexDirection:'row'
+  },
+  item_img:{
+    width:100,
+    height:100,
+    resizeMode:'contain',
+  },
+  item_title:{
+    fontSize:20,
+    justifyContent:'center',
+    marginLeft:20
   }
+
 })
 
 export default styles

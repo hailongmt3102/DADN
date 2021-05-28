@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const tab = createMaterialTopTabNavigator();
 
-function homePageTab() {
+function homePageScreen() {
 
 	// let farm_data, productions_data;
 	const [farm, setFarm] = useState({});
@@ -89,7 +89,7 @@ const Your_fame = (props) => {
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.button}
-					onPress={() => { }}
+					onPress={() => {navigate("ListFieldsScreen", {})}}
 				>
 					<Text style={styles.innerbtn}>
 						Kiểm tra
