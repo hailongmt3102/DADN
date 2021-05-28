@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react_native_frontend",
-    "slug": "react_native_frontend",
+    "name": "react_native_frontend_2917",
+    "slug": "react_native_frontend_2917",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,6 +27,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": ""
   }
 }
