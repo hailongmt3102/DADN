@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
 	},
 	production_item: {
 		margin: 20,
-		backgroundColor: "FFFFFF"
+		backgroundColor: "#FFFFFF"
 	}
 })
 

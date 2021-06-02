@@ -1,4 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
+import { color } from 'react-native-reanimated';
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -46,23 +47,28 @@ const styles = StyleSheet.create({
   },
   list_view_container:{
     flex:1,
-    padding:10
+    padding:10,
   },
   item_img_and_title:{
-    margin:20,
-    backgroundColor:"FFFFFF",
+    marginTop:20,
+    marginLeft:20,
+    marginRight:20,
+    backgroundColor: "#FFF",
     flex:1,
-    flexDirection:'row'
+    flexDirection:'row',
+    borderRadius:10
   },
   item_img:{
     width:100,
     height:100,
-    resizeMode:'contain',
+    resizeMode:'cover',
+    marginLeft:10
   },
   item_title:{
     fontSize:20,
     justifyContent:'center',
-    marginLeft:20
+    alignSelf:'center',
+    marginLeft:20,
   }
 
 })
