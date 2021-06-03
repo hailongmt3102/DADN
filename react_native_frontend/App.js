@@ -15,19 +15,13 @@ import { navigationRef } from './src/NavigationRoot';
 import { set_access_token, set_refresh_token, get_access_token, test, get_refresh_token } from './src/AsyncStorage'
 // import SyncStorage from 'sync-storage';
 
-// SyncStorage.set('foo', 'bar');
-
-// const result = SyncStorage.get('foo');
-// console.log(result); // 'bar'
-
 const Stack = createStackNavigator();
 
 const App = () => {
 
 	set_refresh_token("")
-	set_access_token("")
+	set_access_token("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyNDg2NzI4OTE0LCJqdGkiOiI3NWZjODM5N2M3MDM0MGQ1YTY4MDkwOWVmY2VjN2U3MCIsInVzZXJfaWQiOjF9.FxGwGOSCN_7F14ZD2-cL7ndsCPNREPm3uWywFd6kwyo")
 	set_refresh_token("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYyMzU4NjEzMSwianRpIjoiMTQ1YzAxNDUxYWRhNDZiMWJlY2ZiMTU4MWZmMWEwYzEiLCJ1c2VyX2lkIjoxfQ.29hgJuq5IECDQnctGn5XppXV6E9N2j8nSxIdwrGqdoM")
-	// set_access_token("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyNDg2MTUzMDkwLCJqdGkiOiIyNDY1MjJmNGEzNDE0YWM5YmJiYmNiNmFiMTUyMmFiMCIsInVzZXJfaWQiOjN9.9Kn04fwpJhZpOJsd7ke0sB8O2Br9pLVnyES2GwwHCaw")
 	return (
 
 		<NavigationContainer

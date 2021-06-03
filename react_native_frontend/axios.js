@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 	baseURL: baseURL,
 	timeout: 5000,
 	headers: {
-		Authorization: "",
+		Authorization: "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyNDg2NzI4OTE0LCJqdGkiOiI3NWZjODM5N2M3MDM0MGQ1YTY4MDkwOWVmY2VjN2U3MCIsInVzZXJfaWQiOjF9.FxGwGOSCN_7F14ZD2-cL7ndsCPNREPm3uWywFd6kwyo",
 		'Content-Type': 'application/json',
 		accept: 'application/json'
 	}

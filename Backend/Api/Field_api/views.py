@@ -47,18 +47,13 @@ class FieldToggleRelay(APIView):
 
     def post(self, request: Request, *args, **kargs):
         try:
+            print("\n"*5,request.data)
             _field: Field = Field.objects.get(
                 field_farm=request.user.user_farm.id,
                 id=kargs["field_id"],
             )
             _field.toggle_relay(request.data["relay"])
-            # field_relay: list[IODevice] = IODevice.objects.filter(
-            #     device_field=_field.id,
-            #     device_type = 2
-            #     )
-            # for device in field_relay:
-            #     device.push_data(1 if request.data["relay"] else 0)
-            # _field.collect_data()
+           
             return Response(FieldSerializer(_field).data, status.HTTP_200_OK)
         except Exception as fail:
             print(fail)

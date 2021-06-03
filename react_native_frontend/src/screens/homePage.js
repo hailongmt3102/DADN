@@ -5,7 +5,8 @@ import axiosInstance, { baseURL } from "../../axios";
 import { navigate } from '../NavigationRoot';
 import { get_access_token } from '../AsyncStorage';
 import axios from 'axios';
-
+import { ListItem } from 'react-native-elements';
+import { key_set } from "../Context/key2text"
 const tab = createMaterialTopTabNavigator();
 
 function homePageScreen() {
@@ -28,70 +29,60 @@ const Your_fame = (props) => {
 	useEffect(
 		() => {
 			if (!farm["id"]) {
-				axiosInstance.get("api/farm/").then(resp => setFarm(resp.data))
-				// console.log("hello");
+				axiosInstance.get("/api/farm/").then(resp => setFarm(resp.data))
 			}
 
 		}
 	)
-	// console.log(farm["farm_image"] ? baseURL + farm["farm_image"] : "")
+	console.log("hello world")
+	console.log("hi", farm)
 	return (
 		<SafeAreaView>
 			<View style={styles.container}>
-				<Image
-					style={styles.image}
-					source={{
-						uri: "http://127.0.0.1:8000/Media/farm_image/default.jpg",
-					}}
-				/>
-				<View
-					style={styles.textline}
-				>
-					<Text
-						style={styles.title}
+				<View style={styles.button_container}>
+					<TouchableHighlight
+						style={styles.button}
+						onPress={() => { console.log(farm) }}
 					>
-						Tên nông trại :{"    "}
-						<Text
-							style={styles.text_content}
-						>
-							OIT Farm
-              </Text>
-					</Text>
+						<Text style={styles.innerbtn}>Cập nhật</Text>
+					</TouchableHighlight>
+					<TouchableHighlight
+						style={styles.button}
+						onPress={() => { navigate("ListFieldsScreen", {}) }}
+					>
+						<Text style={styles.innerbtn}>Kiểm tra</Text>
+					</TouchableHighlight>
+
+				</View>
+				<View style={styles.image_container}>
+					<Image
+						// style={styles.image}
+						source={{
+							uri: "https://images.pexels.com/photos/4717019/pexels-photo-4717019.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+						}}
+					/>
 				</View>
 
-				<View
-					style={styles.textline}
-				>
-					<Text
-						style={styles.title}
-					>
-						Ngày tạo        :{"    "}
-						<Text
-							style={styles.text_content}
-						>
-							12/5/2021
-              </Text>
-					</Text>
+				<View style={styles.datas_container}>
+					{
+						Object.keys(farm).map((key, index) => {
+							if (key != "farm_image")
+								return (
+									< ListItem key={index} bottomDivider>
+										<ListItem.Title >{key_set[key]}</ListItem.Title>
+										<ListItem.Content>
+											{farm[key]}
+										</ListItem.Content>
+									</ListItem>
+								)
+						})
+					}
 				</View>
 
-				<TouchableHighlight
-					style={styles.button}
-					onPress={() => { console.log(farm) }}
-				>
-					<Text style={styles.innerbtn}>
-						Cập nhật
-           			</Text>
-				</TouchableHighlight>
-				<TouchableHighlight
-					style={styles.button}
-					onPress={() => { navigate("ListFieldsScreen", {}) }}
-				>
-					<Text style={styles.innerbtn}>
-						Kiểm tra
-            		</Text>
-				</TouchableHighlight>
+
+
 			</View>
-		</SafeAreaView>
+		</SafeAreaView >
 	)
 
 }
@@ -124,14 +115,45 @@ const Productions = () => {
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
+
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: '#FBFDFE',
 		width: width,
-		height: height
+		height: 700
+
 	},
+	image_container: {
+		flex: 3,
+		backgroundColor: "red",
+	},
+	datas_container: {
+		flex: 8,
+	},
+	button_container: {
+		flex: 2,
+		flexDirection: 'row',
+		backgroundColor: "coral",
+		justifyContent: "space-evenly",
+		alignItems: "center"
+	},
+	button: {
+		borderRadius: 20,
+		height: 40,
+		width: 150,
+		alignSelf: 'center',
+		backgroundColor: '#9A79FE',
+		paddingLeft: 20,
+		paddingRight: 20,
+		marginTop: 20,
+		justifyContent: 'center',
+		textAlign: 'center',
+		flexDirection: 'row',
+		// flex: 1
+	},
+
 	image: {
-		height: 300,
+		height: 200,
 		resizeMode: 'contain',
 		justifyContent: 'center',
 		alignSelf: 'center',
@@ -148,19 +170,7 @@ const styles = StyleSheet.create({
 	text_content: {
 		fontSize: 20
 	},
-	button: {
-		borderRadius: 20,
-		height: 40,
-		width: 150,
-		alignSelf: 'center',
-		backgroundColor: '#9A79FE',
-		paddingLeft: 20,
-		paddingRight: 20,
-		marginTop: 20,
-		justifyContent: 'center',
-		textAlign: 'center',
-		flexDirection: 'row'
-	},
+
 	innerbtn: {
 		color: '#FFF',
 		fontSize: 18,
