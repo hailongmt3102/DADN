@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, Text, SafeAreaView, StyleSheet, Dimensions, TouchableHighlight } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import axiosInstance, {baseURL} from "../../axios";
+import axiosInstance, { baseURL } from "../../axios";
 import { navigate } from '../NavigationRoot';
 import { get_access_token } from '../AsyncStorage';
 import axios from 'axios';
@@ -10,7 +10,6 @@ const tab = createMaterialTopTabNavigator();
 
 function homePageScreen() {
 
-	// let farm_data, productions_data;
 	const [farm, setFarm] = useState({});
 	const [productions, setProductions] = useState();
 
@@ -29,24 +28,20 @@ const Your_fame = (props) => {
 	useEffect(
 		() => {
 			if (!farm["id"]) {
-				get_access_token().then((token) => {
-					axiosInstance.defaults.headers.common["Authorization"] = "JWT " + token
-					axiosInstance.get("api/farm/").then(resp => resp.data).then(data => setFarm(data))
-				})
-				console.log("hello")
+				axiosInstance.get("api/farm/").then(resp => setFarm(resp.data))
+				// console.log("hello");
 			}
 
-		} 
+		}
 	)
-	console.log(farm["farm_image"] ? baseURL + farm["farm_image"] : "")
+	// console.log(farm["farm_image"] ? baseURL + farm["farm_image"] : "")
 	return (
 		<SafeAreaView>
 			<View style={styles.container}>
 				<Image
 					style={styles.image}
 					source={{
-						// uri:  baseURL + farm["farm_image"],
-						uri: "http://localhost:8000/Media/farm_image/1.jpg",
+						uri: "http://127.0.0.1:8000/Media/farm_image/default.jpg",
 					}}
 				/>
 				<View
@@ -81,7 +76,7 @@ const Your_fame = (props) => {
 
 				<TouchableHighlight
 					style={styles.button}
-					onPress={() => {console.log(farm) }}
+					onPress={() => { console.log(farm) }}
 				>
 					<Text style={styles.innerbtn}>
 						Cập nhật
@@ -89,7 +84,7 @@ const Your_fame = (props) => {
 				</TouchableHighlight>
 				<TouchableHighlight
 					style={styles.button}
-					onPress={() => {navigate("ListFieldsScreen", {})}}
+					onPress={() => { navigate("ListFieldsScreen", {}) }}
 				>
 					<Text style={styles.innerbtn}>
 						Kiểm tra
