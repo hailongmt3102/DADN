@@ -7,9 +7,11 @@ class is_admin(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:
             return True
-        return request.user.user_type == 2
+        return request.user.user_type == 0
 
     def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return True
         return request.user.user_type == 0
 
 

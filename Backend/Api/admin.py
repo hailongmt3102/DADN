@@ -20,5 +20,8 @@ class AdminWateringHistory(admin.ModelAdmin):pass
 @admin.register(SensorData)
 class AdminSensorData(admin.ModelAdmin):pass
 
-@admin.register(IOdevice)
-class AdminSensorData(admin.ModelAdmin):pass
+@admin.register(IODevice)
+class AdminIODevice(admin.ModelAdmin):pass
+
+@admin.register(Feed)
+class AdminFeed(admin.ModelAdmin):pass

@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
-from Api.models import SensorData, Field, IOdevice
+from Api.models import SensorData, Field, IODevice
 from Auth.permissions import is_admin, is_owner
 from .serializers import DataListItemSerializer, DataSerializer
 from rest_framework.response import Response
@@ -16,7 +16,7 @@ class DataCollectApi(APIView):
         field = Field.objects.get(id=kargs["field_id"])
         if not field:
             return Response(None, status.HTTP_404_NOT_FOUND)
-        io_device = IOdevice.objects.filter(device_field=field.id).all()
+        io_device = IODevice.objects.filter(device_field=field.id).all()
         data = {}
         for device in io_device:
             if not device.output:

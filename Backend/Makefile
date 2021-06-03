@@ -5,3 +5,9 @@ all:
 
 clean:
 	rm -rf  db.sqlite3
+
+pull:
+	python manage.py pulldata --cycle 10
+
+push:
+	python manage.py makedata --cycle 10

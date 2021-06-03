@@ -59,7 +59,11 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         validators=[MinValueValidator(0), MaxValueValidator(2)],
         default = 1
     )
-
+    """
+    0 admin
+    1 owner
+    2 staff
+    """
     user_address = models.CharField(max_length=50, default="")
 
     user_farm = models.ForeignKey(

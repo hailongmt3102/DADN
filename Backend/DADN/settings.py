@@ -44,12 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'Auth',
     'Api',
-    'Crop_api',
-    'Farm_api',
-    'Field_api',
-    'Production_api',
-    'Sensor_data_api',
-    'Watering_api',
+    'Commands',
     'corsheaders',
     # 'channels'
 ]

@@ -18,6 +18,7 @@ def CustomSerializerFiledApi(_serializer_class):
             print(request.get_full_path().split('/'))
             queryset = Field.objects.filter(
                 field_farm=request.user.user_farm.id,
+                id =  kargs["field_id"]
             ).first()
             datas = self.serializer_class(queryset).data if queryset else {}
             return Response(datas, status.HTTP_200_OK)

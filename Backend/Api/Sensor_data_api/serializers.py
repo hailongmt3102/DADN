@@ -45,3 +45,15 @@ class DataListItemSerializer(serializers.ModelSerializer):
             "id",
             "record_time",
         ]
+
+
+class DataBriefSerailizer(serializers.ModelSerializer):
+    class Meta:
+        model = SensorData
+        fields = [
+            "ground_humidity",
+            "air_humidity",
+            "air_temperature",
+            "is_relay_on",
+            "record_time",
+        ]
