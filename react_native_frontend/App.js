@@ -10,6 +10,7 @@ import AdminLoginScreen from './src/screens/adminLogin';
 import ForgotPassScreen from './src/screens/forgotPass';
 import HomePageScreen from './src/screens/homePage';
 import listFieldsScreen from './src/screens/listFields'
+import FieldPageScreen from './src/screens/fieldPage'
 
 import { navigationRef } from './src/NavigationRoot';
 import { set_access_token, set_refresh_token, get_access_token, test, get_refresh_token } from './src/AsyncStorage'
@@ -69,7 +70,13 @@ const App = () => {
 				<Stack.Screen
 					name="ListFieldsScreen"
 					component={listFieldsScreen}
-					options={{ title: "🌳   Khu vực " }}
+					options={{ title: "🌳 Danh sách khu vực " }}
+				/>
+
+				<Stack.Screen
+					name="fieldPage"
+					component={FieldPageScreen}
+					options={({route}) => ({title: "🌳 Khu vực " + route.params.field_id})}
 				/>
 			</Stack.Navigator>
 		</NavigationContainer>

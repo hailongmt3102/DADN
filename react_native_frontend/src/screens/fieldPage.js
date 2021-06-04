@@ -9,10 +9,13 @@ import FieldSensor from './fields/fieldSensor'
 
 const Tab = createMaterialTopTabNavigator();
 
-const FieldPage = () => {
+const FieldPage = ({route, navigation}) => {
+    const field_id = route.params.field_id
     return(
         <Tab.Navigator>
-            <Tab.Screen name="Chi tiết" component={FieldDetail}/>
+            <Tab.Screen name="Chi tiết">
+                {() => <FieldDetail field_id = {field_id} />}
+            </Tab.Screen>
 
             <Tab.Screen name="Mùa vụ gần nhất" component={FieldLastedCrop}/>
 
