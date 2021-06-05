@@ -2,10 +2,13 @@ import axios from 'axios';
 import * as NavigationRoot from './NavigationRoot';
 
 import { get_access_token, set_access_token, get_refresh_token, set_refresh_token } from './AsyncStorage';
-
-export const baseURL = ' https://0d702f8ce5db.ngrok.io';
+// import https from "https"
+export const baseURL = 'https://192.168.1.7';
 
 const axiosInstance = axios.create({
+	// httpsAgent: new https.Agent({
+	// 	rejectUnauthorized: false
+	// }),
 	baseURL: baseURL,
 	timeout: 100000,
 	headers: {
@@ -25,7 +28,10 @@ axiosInstance.interceptors.response.use(
 	},
 	async function (error) {
 		const originalRequest = error.config;
-		const response_status = error.response.status
+		console.log(error)
+		const response = error.response
+		let response_status
+		if (response) { response_status = response['status'] }
 		if (typeof error.response === 'undefined') {
 
 			alert(

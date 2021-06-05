@@ -7,6 +7,7 @@ import { get_access_token } from '../Context/AsyncStorage';
 import axios from 'axios';
 import { ListItem, Avatar } from 'react-native-elements';
 import { key_set } from "../Context/key2text"
+import { shouldUseActivityState } from 'react-native-screens';
 // import userLogin from './userLogin';
 const listFieldsScreen = (props) => {
 	const [data, setData] = useState({})
@@ -14,7 +15,7 @@ const listFieldsScreen = (props) => {
 
 	const get_data = () => {
 		console.log(axiosInstance.get("api/farm/fields/").then(resp => {
-		
+
 			setData(resp.data)
 		}))
 	}
@@ -29,6 +30,7 @@ const listFieldsScreen = (props) => {
 		console.log(data)
 		return (
 			<ScrollView style={styles.container} >
+
 				<View>
 					{
 						data["fields_of_farm"].map((field, index) => {
@@ -38,9 +40,18 @@ const listFieldsScreen = (props) => {
 							if (field["crop_of_field"])
 								image = field["crop_of_field"]["crop_production"]["production_image"]
 							return (
-								<ListItem onPress={() => { navigate("fieldPage", {field_id:field["id"]}) }} style={styles.field_container} bottomDivider topDivider>
-									<Avatar rounded source={{ uri: "https://75246de4dd17.ngrok.io/Media/production_image/default.jpg" }} />
-									<ListItem.Title onValueChange={() => { }} style={styles.field_data_title}>{"FIELD NO." + field.field_location_index}</ListItem.Title>
+								<ListItem style={styles.field_container} bottomDivider topDivider>
+
+									<View
+										onPress={() => { navigate("fieldPage", { field_id: field["id"] }) }}
+										style={styles.field_data_title}>
+										<Image source={{ uri: baseURL + "/Media/production_image/default.jpg" }}
+											style={{ width: 50, height: 50, borderRadius: "50%", borderWidth: "1" }} />
+
+										<ListItem.Title style={{ paddingLeft: 10 }}>{"FIELD NO." + field.field_location_index}</ListItem.Title>
+									</View>
+
+
 									<ListItem.Subtitle>
 										<Switch
 											trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -70,7 +81,7 @@ const listFieldsScreen = (props) => {
 						})
 					}
 				</View>
-				<View>
+				<View style={styles.button_container}>
 					<TouchableHighlight
 						style={styles.button}
 						onPress={() => { }}
@@ -98,22 +109,35 @@ const styles = StyleSheet.create({
 		height: height,
 		// backgroundColor: "red",
 	},
+	image_container: {
+
+	},
 	fields_container: {},
+	button_container: {
+		flex: 1,
+		width: width,
+		// backgroundColor:"red",
+		justifyContent: "space-evenly",
+		paddingTop: 20,
+	},
 	field_container: {},
-	field_data_title: { flex: 1 },
+	avatar: { width: 20 },
+	field_data_title: {
+		flex: 1, flexDirection: "row",
+		alignItems: "center"
+	},
 	button: {
+		// flex:1,
 		borderRadius: 20,
 		height: 40,
 		width: 150,
-		alignSelf: 'center',
+		alignItems: 'center',
 		backgroundColor: '#9A79FE',
-		paddingLeft: 20,
-		paddingRight: 20,
-		marginTop: 20,
-		justifyContent: 'center',
+		justifyContent: 'space-evenly',
+		margin: "auto",
 		textAlign: 'center',
 		flexDirection: 'row',
-		// flex: 1
+
 	},
 })
 

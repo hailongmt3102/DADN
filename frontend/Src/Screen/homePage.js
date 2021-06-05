@@ -7,6 +7,7 @@ import { get_access_token } from '../Context/AsyncStorage';
 import axios from 'axios';
 import { ListItem } from 'react-native-elements';
 import { key_set } from "../Context/key2text"
+
 const tab = createMaterialTopTabNavigator();
 
 function homePageScreen() {
@@ -87,16 +88,7 @@ const Your_fame = (props) => {
 
 // get production from server .......
 // TODO
-const list = [
-	{
-		image: '../images/imageDefault.png',
-		title: 'Production name'
-	},
-	{
-		image: '../images/imageDefault.png',
-		title: 'Production name'
-	}
-]
+
 
 // TODO
 const Productions = () => {

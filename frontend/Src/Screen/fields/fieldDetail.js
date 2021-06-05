@@ -33,22 +33,12 @@ const FieldDetail = (props) => {
                         <ListItem.Title>FIELD NO.</ListItem.Title>
                         <ListItem.Subtitle>{data["field_location_index"]}</ListItem.Subtitle>
                     </ListItem>
-                    {/* <ListItem>
-                        <ListItem.Title>{key_set[key]}</ListItem.Title>
-                        <ListItem.Subtitle>{data[key]}</ListItem.Subtitle>
+                    <ListItem topDivider bottomDivider>
+                        <ListItem.Title>FIELD </ListItem.Title>
+                        <ListItem.Subtitle>{data["field_location_index"]}</ListItem.Subtitle>
                     </ListItem>
-                    <ListItem>
-                        <ListItem.Title>{key_set[key]}</ListItem.Title>
-                        <ListItem.Subtitle>{data[key]}</ListItem.Subtitle>
-                    </ListItem>
-                    <ListItem>
-                        <ListItem.Title>{key_set[key]}</ListItem.Title>
-                        <ListItem.Subtitle>{data[key]}</ListItem.Subtitle>
-                    </ListItem>
-                    <ListItem>
-                        <ListItem.Title>{key_set[key]}</ListItem.Title>
-                        <ListItem.Subtitle>{data[key]}</ListItem.Subtitle>
-                    </ListItem> */}
+                    
+                 
 
                 </View>
             </ScrollView>

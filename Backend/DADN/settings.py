@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'corsheaders',
     # 'channels'
 ]
-
+# CSRF_COOKIE_DOMAIN = "*"
+CSRF_COOKIE_SECURE = False
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -183,3 +184,23 @@ MEDIA_URL = '/Media/'
 # ASGI_APPLICATION = 'DADN.asgi.application'
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'file': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': 'log.json',
+#         },
+#     },
+#     'loggers': {
+#         'api': {
+#             'handlers': ['file'],
+#             'level': 'INFO',
+#             'propagate': True,
+#         },
+#     },
+# }

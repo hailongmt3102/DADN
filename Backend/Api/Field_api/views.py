@@ -8,7 +8,7 @@ from rest_framework.request import Request
 from .serializers import *
 from Api.Sensor_data_api.serializers import DataSerializer
 # Create your views here.
-
+from json import dumps
 
 def CustomSerializerFiledApi(_serializer_class):
 
@@ -53,8 +53,11 @@ class FieldToggleRelay(APIView):
                 id=kargs["field_id"],
             )
             _field.toggle_relay(request.data["relay"])
-           
-            return Response(FieldSerializer(_field).data, status.HTTP_200_OK)
+            resp = FieldSerializer(_field).data
+            # print()
+            # dumps(resp, indent = 4)
+            # print()
+            return Response(resp, status.HTTP_200_OK)
         except Exception as fail:
             print(fail)
             return Response({"message": "Invalid field id"}, status.HTTP_404_NOT_FOUND)

@@ -113,8 +113,6 @@ class Field(models.Model):
             lambda device: device.collect(),
             devices
         ))
-        print(devices_datas)
-        # print(devices_datas)
         id_set = [item[0] for item in devices_datas]
         _data = self.latest_data()
         if not _data or (len([
@@ -273,7 +271,7 @@ class IODevice(models.Model):
     )
     device_field = models.ForeignKey(
         to="Field",
-        related_name='air_sensor_of_field',
+        related_name='device_of_field',
         on_delete=models.CASCADE,
         null=False
     )
@@ -328,7 +326,6 @@ class IODevice(models.Model):
             # print(data)
             res = [data.id]
             value = json.loads(data.value)
-            print(value)
             res += tuple(map(
                 lambda x: float(x),
                 value["data"].split("-")))
@@ -341,6 +338,7 @@ class IODevice(models.Model):
             {"id": "7", "name": "TEMP-HUMID", "data": "27-54", "unit": "C-%"},
             {"id": "11", "name": "RELAY", "data": "0", "unit": ""}
         ]
+
         self.check_feed()
         if (self.is_my_device and self.device_type == 2):
             self.aio.create_data(self.device_feed_name, Data(value=_data))
@@ -353,3 +351,7 @@ class IODevice(models.Model):
 
     def __str__(self):
         return self.device_feed_name
+
+
+class log(models.Model):
+    text = models.CharField(max_length=1000000)

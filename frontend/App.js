@@ -29,7 +29,7 @@ const App = () => {
 			ref={navigationRef}
 		>
 			<Stack.Navigator
-				initialRouteName='HomePageScreen'
+				initialRouteName='ListFieldsScreen'
 			>
 				<Stack.Screen
 					name="WelcomeScreen"
