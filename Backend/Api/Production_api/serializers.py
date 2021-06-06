@@ -1,7 +1,8 @@
 from Api.models import Production
 from rest_framework import serializers
 
-class ProductionSerializer(serializers.ModelSerializer): 
+
+class ProductionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Production
         fields = [
@@ -10,3 +11,5 @@ class ProductionSerializer(serializers.ModelSerializer):
             "production_image",
             "production_period",
         ]
+
+

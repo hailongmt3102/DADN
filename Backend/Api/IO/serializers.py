@@ -14,6 +14,8 @@ class DeviceOfFieldSerializer(serializers.ModelSerializer):
                 "device_feed_name",
                 "device_type",
             ]
+
+            
     device_of_field = DeviceBriefSerializer(many=True)
 
     class Meta:

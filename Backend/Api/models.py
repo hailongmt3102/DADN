@@ -252,10 +252,10 @@ class Feed(models.Model):
             "http://dadn.esp32thanhdanh.link/").text)
         if self.feed_username == "CSE_BBC":
             self.feed_key = data["keyBBC"]
-            self.save()
+
         elif self.feed_username == "CSE_BBC1":
             self.feed_key = data["keyBBC1"]
-            self.save()
+        self.save()
 
     def __str__(self):
         return self.feed_username
@@ -269,6 +269,7 @@ class IODevice(models.Model):
         on_delete=models.CASCADE,
         null=False
     )
+
     device_field = models.ForeignKey(
         to="Field",
         related_name='device_of_field',
@@ -312,7 +313,6 @@ class IODevice(models.Model):
         try:
             data = self.aio.receive(self.device_feed_name)
             if data:
-
                 return self.process_data(data)
             return None
         except Exception as f:

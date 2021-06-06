@@ -36,7 +36,7 @@ class CropProductionBriefSerializer(serializers.ModelSerializer):
         class Meta:
             model = Production
             fields = [
-                "id","production_image","production_name"
+                "id", "production_image", "production_name"
             ]
     crop_production = _ProductionSerializer(many=False)
 
@@ -45,4 +45,13 @@ class CropProductionBriefSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "crop_production",
+            "crop_start_date"
         ]
+
+
+"""
+
+sudo chown www-data:www-data /home/ben1904/DADN/Backend/DADN
+sudo chown www-data:www-data /home/ben1904/DADN/Backend/db.sqlite3
+
+"""

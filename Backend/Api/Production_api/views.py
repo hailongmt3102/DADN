@@ -1,3 +1,5 @@
+from django.db.models import query
+import Api
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
@@ -8,10 +10,17 @@ from rest_framework.response import Response
 # Create your views here.
 
 
-class ProductionListApi(generics.ListCreateAPIView):
+class ProductionListApi(APIView):
     permission_classes = [IsAuthenticated, is_admin]
-    queryset = Production.objects.all().order_by("-id")
     serializer_class = ProductionSerializer
+    def get(self, request, *args, **kargs):
+        query_set = Production.objects.all().order_by("production_name")
+        data = list(map(
+            lambda production:
+                self.serializer_class(production).data ,
+                query_set
+        ))
+        return Response(data, status.HTTP_200_OK) 
 
 
 class ProductionApi(APIView):

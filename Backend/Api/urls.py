@@ -7,5 +7,6 @@ urlpatterns = [
     path("production/", include("Api.Production_api.urls")),
     path("data/", include("Api.Sensor_data_api.urls")),
     path("water/", include("Api.Watering_api.urls")),
+    path("device/", include("Api.IO.urls")),
     path("test/", test.as_view())
 ]

@@ -35,7 +35,7 @@ class FieldLatestCropSerializer(serializers.BaseSerializer):
         crop = Crop.objects.filter(
             crop_field=instance.id).order_by('-id').first()
         crop_data = CropSerializers(crop).data if crop else {}
-        resp =  {
+        resp = {
             "field_id": instance.id,
             **crop_data
         }

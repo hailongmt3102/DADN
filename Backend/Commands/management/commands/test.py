@@ -8,12 +8,13 @@ from datetime import datetime
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        object: WateringHistory = WateringHistory.objects.order_by(
-            "-id").first()
-        print(object.watering_end_time)
-        temp:datetime = object.watering_end_time
-        temp = temp.replace(tzinfo=None)
-        now = datetime.utcnow()
-        print(now)
-        difference = now - temp
-        print(difference)
+        devices =list(IODevice.objects.filter().order_by("id"))
+        fields =list( Field.objects.all().order_by("id"))
+        for field in fields :
+            for i in range(3):
+                # print(field)
+                # print(devices)
+                print(devices[0],devices[0].device_field)
+                # devices[0].device_field = field
+                # devices[0].save()
+                devices = devices[1:]
