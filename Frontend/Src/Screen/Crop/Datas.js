@@ -3,33 +3,40 @@ import axiosInstance, { baseURL } from "../../Context/Axios";
 import {
     MyList
 } from "../../Component/MyList"
+import {
+    fulldate_of_date
+} from "../../Context/MyTool"
+import {
+    stack_navigate
+} from "../../Context/NavigationRoot"
 const DataList = (props) => {
 
-    const { field_id } = props
+    const { crop_id } = props
 
     const get_data = (set_function) => {
 
         console.log(axiosInstance.get(
-            ("/api/data/field/" + field_id.toString())
+            ("/api/data/crop/" + crop_id.toString())
         ).then(resp => {
-            set_function(resp.data["device_of_field"])
+            set_function(resp.data)
         }))
 
     }
 
     const map_function = (data) => {
         return {
-            title: (new String(data["device_feed_name"])).toUpperCase(),
+            title: fulldate_of_date(data["record_time"]),
             image: null,
-            subtitle: null
+            subtitle: null,
+            navigation_function: () => { }
         }
     }
     return (
         <MyList
             get_data={get_data}
             map_function={map_function}
-        /> 
-   
+        />
+
     )
 }
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as NavigationRoot from './NavigationRoot';
+import { stack_navigate } from './NavigationRoot';
 
 import { get_access_token, set_access_token, get_refresh_token, set_refresh_token } from './AsyncStorage';
 // import https from "https"r
@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 	baseURL: baseURL,
 	timeout: 10000,
 	headers: {
-		Authorization: "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyNDg2ODI1NTQ0LCJqdGkiOiIxMjIxMzU2NTJkOTI0MzQ3YWM5YjZmMmQ2YWM5Y2Q5MiIsInVzZXJfaWQiOjF9.rgX2Js8K5ChQRP4n8w2vGszKS6Em5o3aRq7l84s1JHs",
+		// Authorization: "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyNDg2ODI1NTQ0LCJqdGkiOiIxMjIxMzU2NTJkOTI0MzQ3YWM5YjZmMmQ2YWM5Y2Q5MiIsInVzZXJfaWQiOjF9.rgX2Js8K5ChQRP4n8w2vGszKS6Em5o3aRq7l84s1JHs",
 		'Content-Type': 'application/json',
 		accept: 'application/json'
 	}
@@ -26,43 +26,96 @@ axiosInstance.interceptors.response.use(
 		return response;
 	},
 	async function (error) {
-		console.log("oops")
-		console.log("this is your err", error)
-		console.log("this is your err", error.config)
-		// // console.log(https)
-		// const originalRequest = error.config;
-		// console.log(error)
-		// const response = error.response
-		// let response_status
-		// if (response) { response_status = response['status'] }
-		// if (typeof error.response === 'undefined') {
+		// console.log("oops")
+		// console.log("this is your err", error.response)
+		// console.log("this is your err", error.config)
+		const originalRequest = error.config;
 
-		// 	alert(
-		// 		'A server/network error occurred. ' +
-		// 		'Looks like CORS might be the problem. ' +
-		// 		'Sorry about this - we will get it fixed shortly.'
-		// 	);
-		// 	return Promise.reject(error);
-		// }
+		const response = error.response
+		let response_status
+		if (response) { response_status = response['status'] }
+		if (typeof error.response === 'undefined') {
 
-		// if (response_status == 401) {
-		// 	// var test = false;
-		// 	// let access_token = (axiosInstance.defaults.headers.common["Authorization"])
-		// 	// get_refresh_token().then(token => {
-		// 	// 	const resq = axiosInstance
-		// 	// 		.post('/auth/token/refresh/', { refresh: token })
+			alert(
+				'A server/network error occurred. ' +
+				'Looks like CORS might be the problem. ' +
+				'Sorry about this - we will get it fixed shortly.'
+			);
+			return Promise.reject(error);
+		}
 
-		// 	// 	resq.then(resp => {
-		// 	// 		set_access_token(resp.data)
-		// 	// 		axiosInstance.defaults.headers.common["Authorization"] = "JWT " + resp.data["access"]
-		// 	// 		console.log(axiosInstance.defaults.headers.common["Authorization"])
-		// 	// 	})
+		if (response_status == 401) {
+			let data = error.response["data"]
+			// console.log(data)
+
+			if (data["detail"]) {
+				if (data["detail"] == new String("Authentication credentials were not provided.")) {
+					return (get_access_token().then(
+						token => {
+
+							if (token) {
+
+								axiosInstance.defaults.headers['Authorization'] =
+									'JWT ' + token;
+								originalRequest.headers['Authorization'] = axiosInstance.defaults.headers['Authorization']
+								return axiosInstance(originalRequest);
+							}
+							else {
+								stack_navigate("UserLoginScreen", {})
+								return Promise.race(10);
+							}
+
+						}
+					))
+
+				} else if (data["detail"] == "Given token not valid for any token type") {
+					// console.log("hello invalid token")
+					if (data["messages"][0]["token_class"] == "AccessToken") {
+						return get_refresh_token().then(
+							token => {
+								if (token) {
+									return axiosInstance.post("/auth/token/refresh/", { refresh: token })
+										.then(resp => resp.data)
+										.then(resp_data => {
+											set_access_token(resp_data.access)
+											axiosInstance.defaults.headers['Authorization'] =
+												'JWT ' + resp_data.access;
+											originalRequest.headers['Authorization'] = axiosInstance.defaults.headers['Authorization']
+											return axiosInstance(originalRequest);
+										})
+								}
+								else {
+									stack_navigate("UserLoginScreen", {})
+									return Promise.race(10);
+								}
+
+							}
+						)
+					}
+				}
+				else if (data["detail"] == "Token is invalid or expired") {
+					stack_navigate("UserLoginScreen", {})
+					return Promise.race(10);
+				}
+			}
+
+			// 	// var test = false;
+			// 	// let access_token = (axiosInstance.defaults.headers.common["Authorization"])
+			// 	// get_refresh_token().then(token => {
+			// 	// 	const resq = axiosInstance
+			// 	// 		.post('/auth/token/refresh/', { refresh: token })
+
+			// 	// 	resq.then(resp => {
+			// 	// 		set_access_token(resp.data)
+			// 	// 		axiosInstance.defaults.headers.common["Authorization"] = "JWT " + resp.data["access"]
+			// 	// 		console.log(axiosInstance.defaults.headers.common["Authorization"])
+			// 	// 	})
 
 
-		// 	// })
-		// 	// // return axiosInstance(originalRequest.url);
-		// 	// return Promise.reject(error);
-		// }
+			// 	// })
+			// 	// // return axiosInstance(originalRequest.url);
+			// 	// return Promise.reject(error);
+		}
 		return Promise.reject(error);
 	}
 );

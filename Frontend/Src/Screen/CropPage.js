@@ -11,8 +11,8 @@ import {
 } from 'react-native';
 import { createMaterialTopTabNavigator, } from '@react-navigation/material-top-tabs';
 
+import DataList from '../Screen/Crop/Datas'
 import CropDetail from '../Component/CropDetail'
-
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -27,16 +27,20 @@ const CropPage = (props) => {
     // let field_id = 1;
     return (
         <Tab.Navigator
-        // tabBar={props => <Test {...props} />}
+            tabBarOptions={
+                {
+                    scrollEnabled: true,
+                    borderRadius: 30
+                }}
         >
 
             <Tab.Screen name="Detail">
-                {() => <CropDetail {...props} crop_id={crop_id} mode={""} data={data} setData={setData}/>}
+                {() => <CropDetail {...props} crop_id={crop_id} mode={""} data={data} setData={setData} />}
             </Tab.Screen>
 
-             {/* <Tab.Screen name="Latest crop">
-                {() => <CropDetail  {...props} field_id={field_id} mode={"field"} />}
-            </Tab.Screen> */}
+            <Tab.Screen name="Datas">
+                {() => <DataList  {...props} crop_id={crop_id} />}
+            </Tab.Screen>
 
             {/*<Tab.Screen name="All crops">
                 {() => <FieldAllCrop  {...props} field_id={field_id} />}
@@ -46,7 +50,7 @@ const CropPage = (props) => {
             </Tab.Screen> */}
 
 
-        </Tab.Navigator>
+        </Tab.Navigator >
     )
 }
 

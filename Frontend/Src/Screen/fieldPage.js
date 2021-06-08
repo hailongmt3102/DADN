@@ -43,7 +43,7 @@ const FieldPage = (props) => {
                 {() => <FieldDetail {...props} field_id={field_id} />}
             </Tab.Screen>
 
-            <Tab.Screen name="Latest crop">
+            <Tab.Screen name="Latest crop" >
                 {() => <FieldLastedCrop  {...props} field_id={field_id} />}
             </Tab.Screen>
 
@@ -61,9 +61,7 @@ const FieldPage = (props) => {
 
 const styles = StyleSheet.create({
     tab: {
-        // borderBottomRightRadius: 50,
-        // borderBottomRightRadius: 50,
-        // backgroundColor:"red"
+
     }
 })
 export default FieldPage;

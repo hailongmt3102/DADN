@@ -53,8 +53,10 @@ class DataListApi(generics.ListCreateAPIView):
             query_set = list(
                 filter(lambda x: x.data_field.id == field, query_set))
         if crop:
-            query_set = list(
-                filter(lambda x: x.data_crop.id == crop, query_set))
+            query_set = [
+                sensor_data for sensor_data in query_set
+                    if sensor_data.data_crop and sensor_data.data_crop.id == crop 
+            ]
 
         return query_set
 

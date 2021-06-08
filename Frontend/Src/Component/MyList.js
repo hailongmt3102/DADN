@@ -27,6 +27,7 @@ export const MyList = (props) => {
 
 
     const { get_data, map_function } = props
+    
     const [data, set_data] = useState([])
     const [is_loaded, setLoaded] = useState(false)
     const [first_load, setFirstLoad] = useState(false)

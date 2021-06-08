@@ -26,27 +26,9 @@ function userLogin({ navigation }) {
         set_refresh_token(response.data.refresh);
         axiosInstane.defaults.headers['Authorization'] =
           'JWT ' + response.data.access;
-        // login successfull
-        // moving to home page
-        // navigate('HomeScreen',{})
+          stack_navigate("HomePageScreen", {})
       })
-      .catch((error) => {
-        console.log(error);
-        console.log("login fail")
-        // Alert.alert(
-        //   "Báo lỗi",
-        //   "Thông tin đăng nhập không hợp lệ",
-        //   [
-        //     {
-        //       text: "Đóng",
-        //       style: "cancel"
-        //     }
-        //   ]
-        // )
-        alert("Thông tin đăng nhập sai")
-        // login fail 
-
-      })
+      
   }
 
   return (

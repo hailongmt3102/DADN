@@ -51,7 +51,8 @@ const MyHeader = (props) => {
 }
 
 const App = () => {
-
+	set_access_token("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjIzMTQyNzM5LCJqdGkiOiI1NTU0OWVkMDFlNWQ0ZDJiYmM0NWZlNGUyYjZlOTljNCIsInVzZXJfaWQiOjF9.q_tOeljmHB8lv_MnER8DzisBcpXE_9_zL28kdOccQAI")
+	set_refresh_token("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYyNDAwNzg5MCwianRpIjoiZjljMWZjMjUxMDNlNDgxMDg1YTJhYTVkNmJjNjdlZjEiLCJ1c2VyX2lkIjoxfQ.YoVCS-SomtggjlXgmfDdscUqCrDcQvgNdUBBQJY2")
 	return (
 		<NavigationContainer
 			ref={stack_navigation_ref}

@@ -50,3 +50,23 @@ export const crop_state = {
     1: "DEHYDRATED",
     2: "HARVESTED",
 }
+
+export const Date_of_string = (param) => {
+    try {
+        return new Date(Date.parse(param))
+
+    }
+    catch (err) {
+        return param
+    }
+}
+
+export const fulldate_of_date = (day) => {
+    try {
+        let temp = Date_of_string(day)
+        return temp.toLocaleString()
+    }
+    catch (err) {
+        return day
+    }
+}

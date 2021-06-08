@@ -29,8 +29,8 @@ import {
 
 const CropDetail = (props) => {
 
-    const { mode ,data, setData} = props
-    let field = props.hasOwnProperty("field_id")?props["field_id"]:""
+    const { mode, data, setData } = props
+    let field = props.hasOwnProperty("field_id") ? props["field_id"] : ""
     console.log("mode", mode)
     const get_data = () => {
         (axiosInstance.get(
@@ -43,57 +43,74 @@ const CropDetail = (props) => {
         }))
     }
 
+    // const [data, set_data] = useState([])
+    const [is_loaded, setLoaded] = useState(false)
+    const [first_load, setFirstLoad] = useState(false)
+
     useEffect(() => {
-        if (!data["id"]) {
+        console.log("1")
+        setFirstLoad(!first_load)
+    }, [])
+
+    useEffect(() => {
+        if (first_load)
             get_data()
-        }
-    })
+    }, [first_load])
 
-    if (data.hasOwnProperty('id')) {
-        let render_data = {
-            plant: data["crop_production"]["production_name"],
-            crop_start_date: short_date(data["crop_start_date"]),
-            crop_harvest_date: data["crop_harvest_date"] ? short_date(data["crop_harvest_date"]) : "",
-            crop_state: crop_state[data["crop_state"]],
-        }
-        return (
-            <ScrollView>
-                <View
-                    style={[styles.container, { width: "100%" }]}
 
-                >
-                    <View style={styles.image_container}>
-                        <Image
-                            source={{ uri: baseURL + data["crop_production"]["production_image"] }}
-                            style={styles.image}
-                        />
+    useEffect(() => {
+        if (first_load)
+            setLoaded(!is_loaded)
+    }, [data])
+
+    if (first_load) {
+        if (data.hasOwnProperty("id")) {
+            let render_data = {
+                plant: data["crop_production"]["production_name"],
+                crop_start_date: short_date(data["crop_start_date"]),
+                crop_harvest_date: data["crop_harvest_date"] ? short_date(data["crop_harvest_date"]) : "",
+                crop_state: crop_state[data["crop_state"]],
+            }
+            return (
+                <ScrollView>
+                    <View
+                        style={[styles.container, { width: "100%" }]}
+
+                    >
+                        <View style={styles.image_container}>
+                            <Image
+                                source={{ uri: baseURL + data["crop_production"]["production_image"] }}
+                                style={styles.image}
+                            />
+                        </View>
+                        <View style={styles.data_container}>
+                            {
+                                Object.keys(render_data).map((key, index) => {
+                                    return (
+                                        <ListItem key={index} bottomDivider>
+                                            <ListItem.Title style={styles.data_title}>
+                                                {key_set[key]}
+                                            </ListItem.Title>
+
+                                            <ListItem.Subtitle>
+                                                {render_data[key]}
+                                            </ListItem.Subtitle>
+                                        </ListItem>
+                                    )
+                                })
+                            }
+                        </View >
+
+
+
+
+
+
                     </View>
-                    <View style={styles.data_container}>
-                        {
-                            Object.keys(render_data).map((key, index) => {
-                                return (
-                                    <ListItem key={index} bottomDivider>
-                                        <ListItem.Title style={styles.data_title}>
-                                            {key_set[key]}
-                                        </ListItem.Title>
-
-                                        <ListItem.Subtitle>
-                                            {render_data[key]}
-                                        </ListItem.Subtitle>
-                                    </ListItem>
-                                )
-                            })
-                        }
-                    </View >
-
-
-
-
-
-
-                </View>
-            </ScrollView >
-        )
+                </ScrollView >
+            )
+        }
+        else return <View><Text>No Crop</Text></View>
     }
     else return (<View><Text>loading</Text></View>)
 }
