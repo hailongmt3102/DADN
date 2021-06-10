@@ -33,7 +33,6 @@ export const MyList = (props) => {
     const [first_load, setFirstLoad] = useState(false)
 
     useEffect(() => {
-        console.log("1")
         setFirstLoad(!first_load)
     }, [])
 

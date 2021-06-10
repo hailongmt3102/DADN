@@ -39,6 +39,7 @@ import HomePageScreen from './Src/Screen/homePage';
 import listFieldsScreen from './Src/Screen/listFields'
 import FieldPage from './Src/Screen/fieldPage'
 import CropPage from './Src/Screen/CropPage'
+import ProductionDetail from './Src/Screen/ProductionDetail'
 // import SyncStorage from 'sync-storage';
 
 const Drawer = createDrawerNavigator();
@@ -51,8 +52,8 @@ const MyHeader = (props) => {
 }
 
 const App = () => {
-	set_access_token("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjIzMTQyNzM5LCJqdGkiOiI1NTU0OWVkMDFlNWQ0ZDJiYmM0NWZlNGUyYjZlOTljNCIsInVzZXJfaWQiOjF9.q_tOeljmHB8lv_MnER8DzisBcpXE_9_zL28kdOccQAI")
-	set_refresh_token("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYyNDAwNzg5MCwianRpIjoiZjljMWZjMjUxMDNlNDgxMDg1YTJhYTVkNmJjNjdlZjEiLCJ1c2VyX2lkIjoxfQ.YoVCS-SomtggjlXgmfDdscUqCrDcQvgNdUBBQJY2")
+	set_access_token("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjIzMjk5MjA2LCJqdGkiOiIwYWI1ZmVkZGE2MDQ0YmE3Yjk1ZmI4MjZkYmRkMDAwZSIsInVzZXJfaWQiOjF9.WhaNuQbWn9ERfPR9lunPKNRbUn-YglrF5So-5iJuI3w")
+	set_refresh_token("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYyNDE2MzE0NiwianRpIjoiYjkyYjNkZWM5MGE0NDRkZWE1NzJjMDE5YjRmNGUxN2EiLCJ1c2VyX2lkIjoxfQ.EiKF1vMETspyQA4t0BEExtw62QhXajwmFMAuwW3cqVo")
 	return (
 		<NavigationContainer
 			ref={stack_navigation_ref}
@@ -85,7 +86,10 @@ const App = () => {
 					options={{ headerShown: false }}
 				/>
 
-				
+				<Stack.Screen
+				name="ProductionDetail"
+				component={ProductionDetail}
+				/>
 
 				{/* <Stack.Screen
 					name="ForgotPassScreen"

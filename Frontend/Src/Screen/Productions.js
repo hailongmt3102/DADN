@@ -3,28 +3,31 @@ import axiosInstance, { baseURL } from "../Context/Axios";
 import {
     MyList
 } from "../Component/MyList"
+import {
+    stack_navigate
+}from "../Context/NavigationRoot"
 const ProductionList = (props) => {
 
 
 
     const get_data = (set_function) => {
 
-        console.log(axiosInstance.get(
-            ("/api/production/" )
+        (axiosInstance.get(
+            ("/api/production/")
         ).then(resp => {
-            console.log()
+
             set_function(resp.data)
         }))
 
     }
 
     const map_function = (data) => {
-        console.log("this is data",data["production_image"])
+
         return {
             title: (new String(data["production_name"])).toUpperCase(),
             image: data["production_image"],
             subtitle: null,
-            navigate_function: () => { }
+            navigate_function: () => {stack_navigate("ProductionDetail", {production_id:data["id"]}) }
         }
     }
     return (

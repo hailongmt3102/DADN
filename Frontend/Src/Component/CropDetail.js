@@ -31,7 +31,7 @@ const CropDetail = (props) => {
 
     const { mode, data, setData } = props
     let field = props.hasOwnProperty("field_id") ? props["field_id"] : ""
-    console.log("mode", mode)
+
     const get_data = () => {
         (axiosInstance.get(
             mode === 'field' ?

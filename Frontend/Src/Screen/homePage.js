@@ -60,7 +60,6 @@ const Your_fame = (props) => {
 		() => {
 			if (!farm["id"]) {
 				axiosInstance.get("api/farm/").then(resp => {
-					console.log(resp.data)
 					setFarm(resp.data)
 				})
 			}
@@ -80,7 +79,7 @@ const Your_fame = (props) => {
 					{
 						Object.keys(farm).map((key, index) => {
 							const exclude = ["farm_image", "id"]
-							console.log(index)
+							
 							if (exclude.indexOf(key) == -1)
 								return (
 									< ListItem key={index} bottomDivider topDivider style={styles.data_container}>
@@ -96,7 +95,7 @@ const Your_fame = (props) => {
 				<View style={styles.button_container}>
 					<TouchableHighlight
 						style={styles.button}
-						onPress={() => { console.log(farm) }}
+						onPress={() => {  }}
 					>
 						<Text style={styles.innerbtn}>Edit</Text>
 					</TouchableHighlight>
