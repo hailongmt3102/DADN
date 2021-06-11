@@ -1,3 +1,4 @@
+from re import search
 from django.http import HttpResponse
 from rest_framework import generics, status
 from rest_framework.views import APIView
@@ -34,6 +35,15 @@ class CropCreateView(APIView):
                 raise Exception("field dont exist")
             if field.get_active_crop():
                 raise Exception("field already has a crop")
-            serializer = CropSerializers(data={"crop_field": field_id, "crop_production":production_id})
+            serializer = CropSerializers(
+                data={"crop_field": field_id, "crop_production": production_id})
+            serializer.if_valid()
+            serializer.save()
+            return Response(serializer.data, status.HTTP_201_CREATED)
         except Exception as err:
-            pass
+            return Response(
+                {
+                    "detail": "Fail to create crop",
+                    "messages": str(err)
+                }, status.HTTP_403_FORBIDDEN
+            )
