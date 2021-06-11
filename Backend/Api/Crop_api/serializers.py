@@ -56,3 +56,10 @@ sudo chown www-data:www-data /home/ben1904/DADN/Backend/DADN
 sudo chown www-data:www-data /home/ben1904/DADN/Backend/db.sqlite3
 
 """
+class CropCreateSerailizer(serializers.ModelSerializer):
+    class Meta:
+        model = Crop
+        fields = [
+            "crop_production",
+            "crop_field"
+        ]

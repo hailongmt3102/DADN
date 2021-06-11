@@ -192,7 +192,7 @@ class Crop(models.Model):
     state_range = ('hydrated', 'dehydrated', 'harvested')
 
     crop_start_date = models.DateTimeField(default=datetime.now)
-    crop_harvest_date = models.DateTimeField()
+    crop_harvest_date = models.DateTimeField(null=True)
     crop_field = models.ForeignKey(
         to="Field", related_name='crops_of_field', on_delete=models.CASCADE, null=False)
     crop_production = models.ForeignKey(
