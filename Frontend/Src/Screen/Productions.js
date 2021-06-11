@@ -15,7 +15,6 @@ const ProductionList = (props) => {
         (axiosInstance.get(
             ("/api/production/")
         ).then(resp => {
-
             set_function(resp.data)
         }))
 

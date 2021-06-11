@@ -23,5 +23,17 @@ class CropsBaseView(APIView):
         return Response(self.serializer_class(crop).data, status.HTTP_200_OK)
 
 
-class FarmCropsBaseView(APIView):
-    pass
+class CropCreateView(APIView):
+    def post(self, request, *args, **kargs):
+        try:
+            data = request.data
+            field_id = data["field_id"]
+            production_id = data["production_id"]
+            field: Field = Field.objects.get(id=field_id)
+            if not field:
+                raise Exception("field dont exist")
+            if field.get_active_crop():
+                raise Exception("field already has a crop")
+            serializer = CropSerializers(data={"crop_field": field_id, "crop_production":production_id})
+        except Exception as err:
+            pass

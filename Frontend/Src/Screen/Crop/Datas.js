@@ -28,7 +28,7 @@ const DataList = (props) => {
             title: fulldate_of_date(data["record_time"]),
             image: null,
             subtitle: null,
-            navigation_function: () => { }
+            navigate_function: () => {stack_navigate("DataDetail", {data_id:data["id"]}) }
         }
     }
     return (

@@ -23,17 +23,12 @@ import {
 } from '../Context/NavigationRoot';
 
 import {
-	get_access_token
-} from '../Context/AsyncStorage';
-
-import axios from 'axios';
-
-import {
 	ListItem
 } from 'react-native-elements';
 
 import {
-	key_set
+	key_set,
+	fulldate_of_date
 } from "../Context/MyTool"
 
 import ProductionList from "./Productions"
@@ -43,7 +38,7 @@ function homePageScreen() {
 
 	const [farm, setFarm] = useState({});
 	const [productions, setProductions] = useState();
-	// stack_navigate("Crop", {crop_id :1}) 
+
 	return (
 		<tab.Navigator>
 			<tab.Screen name="Nông trại">
@@ -59,9 +54,9 @@ const Your_fame = (props) => {
 	useEffect(
 		() => {
 			if (!farm["id"]) {
-				axiosInstance.get("api/farm/").then(resp => {
+				(axiosInstance.get("api/farm/").then(resp => {
 					setFarm(resp.data)
-				})
+				}))
 			}
 		}
 	)
@@ -79,7 +74,7 @@ const Your_fame = (props) => {
 					{
 						Object.keys(farm).map((key, index) => {
 							const exclude = ["farm_image", "id"]
-							
+
 							if (exclude.indexOf(key) == -1)
 								return (
 									< ListItem key={index} bottomDivider topDivider style={styles.data_container}>
@@ -95,7 +90,7 @@ const Your_fame = (props) => {
 				<View style={styles.button_container}>
 					<TouchableHighlight
 						style={styles.button}
-						onPress={() => {  }}
+						onPress={() => { }}
 					>
 						<Text style={styles.innerbtn}>Edit</Text>
 					</TouchableHighlight>
@@ -121,7 +116,7 @@ const Your_fame = (props) => {
 // TODO
 const Productions = () => {
 	return (
-		<ProductionList/>
+		<ProductionList />
 	)
 }
 

@@ -20,6 +20,8 @@ target 'Frontend' do
 
   pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
 
+  pod 'RNCPicker', :path => '../node_modules/@react-native-picker/picker'
+
   target 'FrontendTests' do
     inherit! :complete
     # Pods for testing

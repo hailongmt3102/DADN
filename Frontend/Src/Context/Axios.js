@@ -5,7 +5,7 @@ import { get_access_token, set_access_token, get_refresh_token, set_refresh_toke
 // import https from "https"r
 // const https = require('https');
 
-export const baseURL = 'http://10.0.2.2:8000';
+export const baseURL = 'http://192.168.1.120/';
 
 const axiosInstance = axios.create({
 	baseURL: baseURL,
@@ -30,7 +30,7 @@ axiosInstance.interceptors.response.use(
 		// console.log("this is your err", error.response)
 		// console.log("this is your err", error.config)
 		const originalRequest = error.config;
-
+		console.log(error.config)
 		const response = error.response
 		let response_status
 		if (response) { response_status = response['status'] }

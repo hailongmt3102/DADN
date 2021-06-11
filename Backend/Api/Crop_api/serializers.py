@@ -15,6 +15,7 @@ class CropSerializers(serializers.ModelSerializer):
             "crop_harvest_date",
             "crop_state",
             "crop_production",
+            "crop_field"
         ]
 
 

@@ -15,7 +15,8 @@ export const key_set = {
     crop_harvest_date: "HARVEST",
     crop_state: "STATUS",
     production_name: "PLANT",
-    production_period: "PERIOD"
+    production_period: "PERIOD",
+    record_at: "RECORD AT"
 }
 
 export const shorternstr = (param) => {

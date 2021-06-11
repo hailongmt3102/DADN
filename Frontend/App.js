@@ -40,6 +40,8 @@ import listFieldsScreen from './Src/Screen/listFields'
 import FieldPage from './Src/Screen/fieldPage'
 import CropPage from './Src/Screen/CropPage'
 import ProductionDetail from './Src/Screen/ProductionDetail'
+import DataDetail from './Src/Component/DataDetail'
+import CreateCrop from './Src/Screen/CreateCrop'
 // import SyncStorage from 'sync-storage';
 
 const Drawer = createDrawerNavigator();
@@ -59,7 +61,7 @@ const App = () => {
 			ref={stack_navigation_ref}
 		>
 			<Stack.Navigator
-				initialRouteName='HomePageScreen'
+				initialRouteName='CreateCrop'
 				// screenOptions={{
 				// 	headerStyle: {
 				// 		shadowOffset: 0, shadowRadius: 0,
@@ -73,6 +75,16 @@ const App = () => {
 
 			>
 
+
+				<Stack.Screen
+					name="CreateCrop"
+					component={CreateCrop}
+				/>
+
+				<Stack.Screen
+					name="DataDetail"
+					component={DataDetail}
+				/>
 
 				<Stack.Screen
 					name="LoginScreen"
@@ -90,12 +102,6 @@ const App = () => {
 				name="ProductionDetail"
 				component={ProductionDetail}
 				/>
-
-				{/* <Stack.Screen
-					name="ForgotPassScreen"
-					component={ForgotPassScreen}
-					options={{ title: "Quên mật khẩu", headerTitle: '' }}
-				/> */}
 
 				<Stack.Screen
 					name="HomePageScreen"
