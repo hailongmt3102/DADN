@@ -30,6 +30,7 @@ class DataSerializer(serializers.ModelSerializer):
             "ground_humidity",
             "air_humidity",
             "air_temperature",
+            "is_relay_on",
             "record_time",
             "data_crop",
             "data_field",
