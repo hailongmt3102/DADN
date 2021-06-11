@@ -35,12 +35,13 @@ class CropCreateView(APIView):
                 raise Exception("field dont exist")
             if field.get_active_crop():
                 raise Exception("field already has a crop")
-            serializer = CropSerializers(
+            serializer = CropCreateSerailizer(
                 data={"crop_field": field_id, "crop_production": production_id})
             serializer.is_valid()
             serializer.save()
             return Response(serializer.data, status.HTTP_201_CREATED)
         except Exception as err:
+            print(err)
             return Response(
                 {
                     "detail": "Fail to create crop",
