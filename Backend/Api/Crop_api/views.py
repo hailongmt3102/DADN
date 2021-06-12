@@ -38,8 +38,7 @@ class CropCreateView(APIView):
             serializer = CropCreateSerailizer(
                 data={"crop_field": field_id, "crop_production": production_id})
             serializer.is_valid()
-            serializer.save()
-            return Response(serializer.data, status.HTTP_201_CREATED)
+            return Response({"crop_id": serializer.save().id}, status.HTTP_201_CREATED)
         except Exception as err:
             print(err)
             return Response(
