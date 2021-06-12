@@ -19,7 +19,7 @@ const FieldLastedCrop = (props) => {
                             color={"red"} />
                     ) : (
                         <CenterButton
-                            action={() => { stack_navigate("CreateCrop", {}) }}
+                            action={() => { stack_navigate("CreateCrop", {field_id:field_id}) }}
                             text={"New crop"}
                             color={"red"} />
                     )) : (

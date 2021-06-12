@@ -32,6 +32,7 @@ axiosInstance.interceptors.response.use(
 		const originalRequest = error.config;
 		console.log(error.config)
 		const response = error.response
+		console.log(error.response)
 		let response_status
 		if (response) { response_status = response['status'] }
 		if (typeof error.response === 'undefined') {

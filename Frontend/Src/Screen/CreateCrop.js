@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, SafeAreaView , Dimensions} from 'react-native';
+import { Text, View, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import axiosInstance from "../Context/Axios"
 import CenterButton from "../Component/CenterButton"
+import {stack_navigate} from "../Context/NavigationRoot"
 import { set } from 'react-native-reanimated';
 const Item = Picker.Item;
 
 
 
-export default
-
-    function CreateCrop(props) {
+export default function CreateCrop(props) {
+    const { field_id } = props.route.params
     const [options, setOptions] = useState()
     const [is_loaded, setLoaded] = useState(false)
     const [first_load, setFirstLoad] = useState(false)
@@ -38,21 +38,26 @@ export default
             setLoaded(!is_loaded)
     }, [options])
 
-
     const [value, setValue] = useState();
+    
+    const submit_data = {
+        "field_id": field_id,
+        "production_id": value
+    }
+
     if (is_loaded) {
         if (value == null && options.length !== 0)
             setValue(options["0"]["id"])
         return (
             <SafeAreaView>
                 <View
-                style={{borderBottomWidth:2, margin:20}}
+                    style={{ borderBottomWidth: 2, margin: 20 }}
                 >
-                    <Text style={{fontSize:20}}>Plant</Text>
+                    <Text style={{ fontSize: 20 }}>Plant</Text>
 
                     <Picker
                         mode="dialog"
-                        style={{ width:width*2/3,alignSelf:"center" }}
+                        style={{ width: width * 2 / 3, alignSelf: "center" }}
                         numberOfLines={5}
                         selectedValue={value}
                         onValueChange={(v) => setValue(v)}
@@ -72,7 +77,14 @@ export default
                     </Picker>
                 </View>
                 <CenterButton
-                    action={() => { }}
+                    action={() => {
+                        console.log(axiosInstance.post("api/crop/create/", submit_data
+                        ).then(resp => resp.data).
+                            then(data => {
+                                console.log(data)
+                                stack_navigate("Crop", { crop_id: data["crop_id"] })
+                            }))
+                    }}
                     text={"Submit"}
                     color={"red"}
                 />

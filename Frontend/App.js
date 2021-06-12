@@ -61,7 +61,7 @@ const App = () => {
 			ref={stack_navigation_ref}
 		>
 			<Stack.Navigator
-				initialRouteName='CreateCrop'
+				initialRouteName='HomePageScreen'
 				// screenOptions={{
 				// 	headerStyle: {
 				// 		shadowOffset: 0, shadowRadius: 0,
