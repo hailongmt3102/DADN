@@ -22,7 +22,6 @@ const login = ({ navigation }) => {
 
       <TouchableHighlight
         onPress={() => {
-          console.log("press")
           navigate_stack("listFieldsScreen", {})
         }}
         style={styles.button}

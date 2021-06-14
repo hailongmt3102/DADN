@@ -34,15 +34,15 @@ import {
 import ProductionList from "./Productions"
 const tab = createMaterialTopTabNavigator();
 
-function homePageScreen() {
-
+function homePageScreen(props) {
+	// stack_navigate("CreateSensor", {field_id:1})
 	const [farm, setFarm] = useState({});
 	const [productions, setProductions] = useState();
 
 	return (
 		<tab.Navigator>
 			<tab.Screen name="Nông trại">
-				{() => <Your_fame data={{ farm, setFarm }} />}
+				{() => <Your_fame {...props} data={{ farm, setFarm }} />}
 			</tab.Screen>
 			<tab.Screen name="Sản phẩm" component={Productions} />
 		</tab.Navigator>
@@ -96,7 +96,7 @@ const Your_fame = (props) => {
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={styles.button}
-						onPress={() => { stack_navigate("ListFieldsScreen", {}) }}
+						onPress={() => { props.navigation.navigate("ListFieldsScreen", {...props}) }}
 					>
 						<Text style={styles.innerbtn}>Fields</Text>
 					</TouchableHighlight>

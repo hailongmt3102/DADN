@@ -26,16 +26,16 @@ function userLogin({ navigation }) {
         set_refresh_token(response.data.refresh);
         axiosInstane.defaults.headers['Authorization'] =
           'JWT ' + response.data.access;
-          stack_navigate("HomePageScreen", {})
+        stack_navigate("HomePageScreen", {})
       })
-      
+
   }
 
   return (
     <SafeAreaView>
       <Text style={styles.title}>
         Đăng nhập
-    </Text>
+      </Text>
       <TextInput
         style={styles.text_input}
         placeholder="Email"

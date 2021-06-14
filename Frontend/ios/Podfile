@@ -22,6 +22,8 @@ target 'Frontend' do
 
   pod 'RNCPicker', :path => '../node_modules/@react-native-picker/picker'
 
+  pod 'RNCCheckbox', :path => '../node_modules/@react-native-community/checkbox'
+
   target 'FrontendTests' do
     inherit! :complete
     # Pods for testing

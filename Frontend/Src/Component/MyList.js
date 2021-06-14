@@ -55,7 +55,7 @@ export const MyList = (props) => {
 
             >
 
-                <View>
+                <View style={{}}>
                     {
                         data.map((entrie, index) => {
 
@@ -105,7 +105,7 @@ export const MyList = (props) => {
                                                     {subtitle}
                                                 </ListItem.Subtitle>)
                                                 :
-                                                (<View></View>)
+                                                []
                                         )
                                     }
                                 </ListItem>
@@ -127,11 +127,13 @@ const height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 10,
+        flex:1,
         backgroundColor: '#FBFDFE',
         width: width,
-        height: height,
+        paddingTop:10,
+        // height: height,
         // backgroundColor: "red",
+        // backgroundColor:"red"
     },
     image_container: {
 

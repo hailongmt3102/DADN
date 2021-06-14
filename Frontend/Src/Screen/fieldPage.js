@@ -18,7 +18,7 @@ const Tab = createMaterialTopTabNavigator();
 const FieldPage = (props) => {
     const { field_id } = props.route.params
     const Test = (props) => {
-        console.log(props)
+        
         return <View></View>
     }
 

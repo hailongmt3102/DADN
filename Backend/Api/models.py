@@ -246,7 +246,13 @@ CSE_BBC/feeds/bk-iot-soil
 class Feed(models.Model):
     feed_username = models.CharField(max_length=100, null=False)
     feed_key = models.CharField(max_length=100, null=False)
-
+    feed_farm = models.ForeignKey(
+        to="Farm",
+        related_name='feed_of_farm',
+        on_delete=models.CASCADE,
+        null=False
+    )
+    
     def update_key(self):
         data = json.loads(requests.get(
             "http://dadn.esp32thanhdanh.link/").text)

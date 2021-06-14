@@ -20,7 +20,7 @@ const CropPage = (props) => {
     const { crop_id } = props.route.params
     const [data, setData] = useState({})
     const Test = (props) => {
-        console.log(props)
+    
         return <View></View>
     }
 

@@ -16,7 +16,7 @@ const FieldAllCrop = (props) => {
         (axiosInstance.get(
             ("/api/field/" + field_id.toString() + "/crops/")
         ).then(resp => {
-            console.log("hello from aixos")
+            
             set_function(resp.data["crops_of_field"])
         }))
 

@@ -78,10 +78,10 @@ export default function CreateCrop(props) {
                 </View>
                 <CenterButton
                     action={() => {
-                        console.log(axiosInstance.post("api/crop/create/", submit_data
+                        (axiosInstance.post("api/crop/create/", submit_data
                         ).then(resp => resp.data).
                             then(data => {
-                                console.log(data)
+                                
                                 stack_navigate("Crop", { crop_id: data["crop_id"] })
                             }))
                     }}

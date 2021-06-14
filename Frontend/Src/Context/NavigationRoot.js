@@ -7,8 +7,8 @@ export function stack_navigate(name, params){
 }
 
 
-// export const drawer_navigation_ref = React.createRef();
+export const drawer_navigation_ref = React.createRef();
 
-// export function navigate_drawer(name, params){
-//     drawer_navigation_ref.current?.navigate(name, params);
-// }
+export function drawer_navigate(name, params){
+    drawer_navigation_ref.current?.navigate(name, params);
+}

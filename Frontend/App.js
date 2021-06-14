@@ -18,6 +18,7 @@ import {
 
 
 import {
+	drawer_navigation_ref,
 	stack_navigation_ref,
 	// drawer_navigation
 } from './Src/Context/NavigationRoot';
@@ -42,93 +43,91 @@ import CropPage from './Src/Screen/CropPage'
 import ProductionDetail from './Src/Screen/ProductionDetail'
 import DataDetail from './Src/Component/DataDetail'
 import CreateCrop from './Src/Screen/CreateCrop'
+import CreateSensor from './Src/Screen/CreateSensor'
 // import SyncStorage from 'sync-storage';
+import Header from "./Src/Component/Header"
+import DrawerContent from "./Src/Component/DrawerContent"
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
-const MyHeader = (props) => {
-	// console.log("props props",props)
-	const { child } = props
-	return <Text>hello</Text>
-}
-
-const App = () => {
-	set_access_token("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjIzMjk5MjA2LCJqdGkiOiIwYWI1ZmVkZGE2MDQ0YmE3Yjk1ZmI4MjZkYmRkMDAwZSIsInVzZXJfaWQiOjF9.WhaNuQbWn9ERfPR9lunPKNRbUn-YglrF5So-5iJuI3w")
-	set_refresh_token("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYyNDE2MzE0NiwianRpIjoiYjkyYjNkZWM5MGE0NDRkZWE1NzJjMDE5YjRmNGUxN2EiLCJ1c2VyX2lkIjoxfQ.EiKF1vMETspyQA4t0BEExtw62QhXajwmFMAuwW3cqVo")
+const ScreensStack = (props) => {
 	return (
-		<NavigationContainer
-			ref={stack_navigation_ref}
-		>
-			<Stack.Navigator
-				initialRouteName='HomePageScreen'
-				// screenOptions={{
-				// 	headerStyle: {
-				// 		shadowOffset: 0, shadowRadius: 0,
-				// 		borderWidth: 0, borderBottomWidth: 0,
-				// 		borderEndWidth: 0, borderLeftWidth: 0,
-				// 		shadowColor: "white", shadowOffset: {
-				// 			width: 0, height: 0
-				// 		}
-				// 	}
-				// }}
+		// <NavigationContainer ref={stack_navigation_ref} >
+		<Stack.Navigator initialRouteName='HomePageScreen'>
+			<Stack.Screen
+				name="CreateSensor"
+				component={CreateSensor}
+			/>
+			<Stack.Screen
+				name="CreateCrop"
+				component={CreateCrop}
+			/>
 
-			>
+			<Stack.Screen
+				name="DataDetail"
+				component={DataDetail}
+			/>
 
+			<Stack.Screen
+				name="LoginScreen"
+				component={LoginScreen}
+				options={{ headerShown: false }}
+			/>
 
-				<Stack.Screen
-					name="CreateCrop"
-					component={CreateCrop}
-				/>
+			<Stack.Screen
+				name="UserLoginScreen"
+				component={UserLoginScreen}
+				options={{ headerShown: false }}
+			/>
 
-				<Stack.Screen
-					name="DataDetail"
-					component={DataDetail}
-				/>
-
-				<Stack.Screen
-					name="LoginScreen"
-					component={LoginScreen}
-					options={{ headerShown: false }}
-				/>
-
-				<Stack.Screen
-					name="UserLoginScreen"
-					component={UserLoginScreen}
-					options={{ headerShown: false }}
-				/>
-
-				<Stack.Screen
+			<Stack.Screen
 				name="ProductionDetail"
 				component={ProductionDetail}
-				/>
+			/>
 
-				<Stack.Screen
-					name="HomePageScreen"
-					component={HomePageScreen}
-					options={{ title: "🌳   Xin chào !" }}
-				/>
+			<Stack.Screen
+				name="HomePageScreen"
+				component={HomePageScreen}
+				options={{
+					headerTitle: _props => <Header {..._props} {...props} label="Home" />
+				}}
+			/>
 
-				<Stack.Screen
-					name="Crop"
-					component={CropPage}
-					options={{}}
-				/>
+			<Stack.Screen
+				name="Crop"
+				component={CropPage}
+				options={{
+					headerTitle: _props => <Header {..._props} {...props} label="Crop" />
+				}}
+			/>
 
-				<Stack.Screen
-					name="ListFieldsScreen"
-					component={listFieldsScreen}
-					options={{}}
-				/>
+			<Stack.Screen
+				name="ListFieldsScreen"
+				component={listFieldsScreen}
+				options={{
+					headerTitle: _props => <Header {..._props} {...props} label="Fields" />
+				}}
+			/>
 
-				<Stack.Screen
-					name="fieldPage"
-					component={FieldPage}
-					options={{
-						headerTitle: props => <MyHeader {...props} />
-					}}
-				/>
-			</Stack.Navigator>
+			<Stack.Screen
+				name="fieldPage"
+				component={FieldPage}
+				options={{
+					headerTitle: _props => <Header {..._props} {...props} label="Field" />
+				}}
+			/>
+		</Stack.Navigator>
+		
+
+	);
+}
+const App = () => {
+	return (
+		<NavigationContainer  ref={stack_navigation_ref} >
+			<Drawer.Navigator drawerContent={_props => <DrawerContent {..._props}/>}>
+				<Drawer.Screen name="Home" component={ScreensStack} />
+			</Drawer.Navigator>
 		</NavigationContainer>
 
 	);

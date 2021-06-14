@@ -15,7 +15,6 @@ class DeviceOfFieldSerializer(serializers.ModelSerializer):
                 "device_type",
             ]
 
-            
     device_of_field = DeviceBriefSerializer(many=True)
 
     class Meta:
@@ -30,6 +29,7 @@ class FeedSerializer (serializers.ModelSerializer):
     class Meta:
         model = Feed
         fields = [
+            "id",
             "feed_username",
             "feed_key"
         ]
@@ -46,3 +46,16 @@ class DeviceSerializer(serializers.BaseSerializer):
             **feed
         }
         return data
+
+
+class CreateDeviceSerailizer(serializers.ModelSerializer):
+    class Meta:
+        model = IODevice
+        fields = [
+            "id",
+            "device_field",
+            "device_type",
+            "device_feed",
+            "is_my_device",
+            "device_feed_name",
+        ]

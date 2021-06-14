@@ -52,7 +52,7 @@ const listFieldsScreen = (props) => {
 									<TouchableOpacity
 
 										onPress={() => {
-											stack_navigate("fieldPage", { field_id: field["id"] })
+											stack_navigate("fieldPage", { ...props, field_id: field["id"] })
 										}}
 										style={styles.field_data_title}>
 										<Image

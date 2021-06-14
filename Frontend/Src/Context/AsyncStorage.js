@@ -2,16 +2,6 @@
 // import { AsyncStorage } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-export const test = () => {
-    var result = {}
-    let a = get_access_token().then(data => { return data })
-    console.log(a)
-    let sth = result.res
-    console.log("hello in ", result.res)
-    return sth
-}
-
 export const get_access_token = async () => {
     try {
         let value = await AsyncStorage.getItem('access_token');
@@ -47,5 +37,16 @@ export const set_refresh_token = async (value) => {
     }
     catch (e) {
         console.log(e)
+    }
+}
+
+export const logout = async ()=> {
+    try {
+        await AsyncStorage.removeItem("refresh_token");
+        await AsyncStorage.removeItem("access_token");
+        return true;
+    }
+    catch(exception) {
+        return false;
     }
 }

@@ -30,7 +30,7 @@ import {
 const ProductionDetail = (props) => {
     const { production_id } = props.route.params
     const get_data = () => {
-        console.log(axiosInstance.get(
+        (axiosInstance.get(
             'api/production/' + production_id.toString()
         ).then(resp => {
             setData(resp.data)
