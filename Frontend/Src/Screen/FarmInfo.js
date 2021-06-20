@@ -1,71 +1,78 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+	useCallback,
+	useState,
+	useEffect
+} from 'react'
 import {
+	ScrollView,
 	View,
-	Image,
 	Text,
+	Image,
 	SafeAreaView,
 	StyleSheet,
 	Dimensions,
 	TouchableHighlight,
-	ScrollView
-} from 'react-native';
+	RefreshControl
+} from 'react-native'
 
+import { key_set } from '../Context/MyTool'
+import axiosInstance, { baseURL } from '../Context/Axios'
 import {
-	createMaterialTopTabNavigator
-} from '@react-navigation/material-top-tabs';
-
-import axiosInstance, {
-	baseURL
-} from "../Context/Axios";
-
-import {
-	stack_navigate
-} from '../Context/NavigationRoot';
-
-import {
-	ListItem
-} from 'react-native-elements';
-
-import {
-	key_set,
-	fulldate_of_date
-} from "../Context/MyTool"
+	ListItem,
+	// List
+} from 'react-native-elements'
 
 
-import FarmInfo from './FarmInfo'
-import ProductionList from "./Productions"
-const tab = createMaterialTopTabNavigator();
 
-function homePageScreen(props) {
-	// stack_navigate("CreateSensor", {field_id:1})
-	const [farm, setFarm] = useState({});
-	const [productions, setProductions] = useState();
-
-	return (
-		<tab.Navigator>
-			<tab.Screen name="Nông trại">
-				{() => <FarmInfo {...props} data={{ farm, setFarm }} />}
-			</tab.Screen>
-			<tab.Screen name="Sản phẩm" component={Productions} />
-		</tab.Navigator>
-	)
-}
-
-const Your_fame = (props) => {
+export default function Your_fame(props) {
 	const { farm, setFarm } = props.data
-	useEffect(
-		() => {
-			if (!farm["id"]) {
-				(axiosInstance.get("api/farm/").then(resp => {
-					setFarm(resp.data)
-				}))
-			}
-		}
-	)
+
+	const get_data = () => {
+		return axiosInstance.get("api/farm/")
+			.then(resp => {
+				setFarm(resp.data)
+				return resp
+			})
+	}
+
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+		get_data().then(() => setRefreshing(false));
+	}, []);
+
+
+	const [is_loaded, setLoaded] = useState(false)
+	const [first_load, setFirstLoad] = useState(false)
+
+	useEffect(() => {
+		setFirstLoad(!first_load)
+	}, [])
+
+	useEffect(() => {
+		if (first_load)
+			get_data()
+	}, [first_load])
+
+
+	useEffect(() => {
+		if (first_load)
+			setLoaded(!is_loaded)
+	}, [farm])
 
 	return (
 		<SafeAreaView>
-			<ScrollView style={styles.container}>
+			<ScrollView style={styles.container}
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+					/>
+				}
+
+
+			>
 
 				<View style={styles.image_container}>
 					<Image source={{ uri: baseURL + farm["farm_image"] }}
@@ -98,7 +105,9 @@ const Your_fame = (props) => {
 					</TouchableHighlight>
 					<TouchableHighlight
 						style={styles.button}
-						onPress={() => { props.navigation.navigate("ListFieldsScreen", {...props}) }}
+						onPress={() => {
+							props.navigation.navigate("ListFieldsScreen", { ...props })
+						}}
 					>
 						<Text style={styles.innerbtn}>Fields</Text>
 					</TouchableHighlight>
@@ -111,16 +120,6 @@ const Your_fame = (props) => {
 
 }
 
-// get production from server .......
-// TODO
-
-
-// TODO
-const Productions = () => {
-	return (
-		<ProductionList />
-	)
-}
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -206,6 +205,3 @@ const styles = StyleSheet.create({
 		backgroundColor: "#FFFFFF"
 	}
 })
-
-
-export default homePageScreen;

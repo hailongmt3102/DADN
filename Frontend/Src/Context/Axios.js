@@ -5,11 +5,11 @@ import { get_access_token, set_access_token, get_refresh_token, set_refresh_toke
 // import https from "https"r
 // const https = require('https');
 
-export const baseURL = 'http://192.168.1.110/';
+export const baseURL = 'http://10.0.2.2:8000';
 
 const axiosInstance = axios.create({
 	baseURL: baseURL,
-	timeout: 10000,
+	timeout: 100000,
 	headers: {
 		// Authorization: "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyNDg2ODI1NTQ0LCJqdGkiOiIxMjIxMzU2NTJkOTI0MzQ3YWM5YjZmMmQ2YWM5Y2Q5MiIsInVzZXJfaWQiOjF9.rgX2Js8K5ChQRP4n8w2vGszKS6Em5o3aRq7l84s1JHs",
 		'Content-Type': 'application/json',

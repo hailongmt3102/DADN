@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, TouchableOpacity, View, Image, Text, SafeAreaView, StyleSheet, Dimensions, TouchableHighlight, ScrollView } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {
+	RefreshControl,
+	Switch,
+	TouchableOpacity,
+	View,
+	Image,
+	Text,
+	StyleSheet,
+	Dimensions,
+	TouchableHighlight,
+	ScrollView
+} from 'react-native';
 import axiosInstance, { baseURL } from "../Context/Axios";
-import {   stack_navigate } from '../Context/NavigationRoot';
-import { get_access_token } from '../Context/AsyncStorage';
-import Request from '../Context/Request';
-import { ListItem, Avatar } from 'react-native-elements';
-import { key_set } from "../Context/MyTool"
-import { shouldUseActivityState } from 'react-native-screens';
+import { stack_navigate } from '../Context/NavigationRoot';
+import { ListItem } from 'react-native-elements';
 // import userLogin from './userLogin';
 const listFieldsScreen = (props) => {
 
-	// stack_navigate("fieldPage", { field_id: 1, headerTitle: "" })
 
 	const [data, setData] = useState({})
-	// const [loading, setLoading] = useState(false)
+
 
 	const get_data = async () => {
 		(axiosInstance.get("/api/farm/fields/").then(resp => {
@@ -22,20 +27,44 @@ const listFieldsScreen = (props) => {
 		}))
 	}
 
+	const [refreshing, setRefreshing] = React.useState(false);
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+		axiosInstance.get("/api/farm/renew/").then(resp => {
+			setData(resp.data)
+		}).then((data) => {
+			setRefreshing(false);
+		})
+	}, []);
+
+	const [is_loaded, setLoaded] = useState(false)
+	const [first_load, setFirstLoad] = useState(false)
+
 	useEffect(() => {
-		if (!data["id"]) {
+		setFirstLoad(!first_load)
+	}, [])
 
+	useEffect(() => {
+		if (first_load)
 			get_data()
-		}
-	})
+	}, [first_load])
 
+	useEffect(() => {
+		if (first_load)
+			setLoaded(!is_loaded)
+	}, [data])
 
-	if (data["id"]) {
+	if (is_loaded) {
 
 		return (
 			<ScrollView
 				style={styles.container}
-
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+					/>
+				}
 			>
 
 				<View>
@@ -86,13 +115,13 @@ const listFieldsScreen = (props) => {
 														let temp_data = { ...data }
 														temp_data["fields_of_farm"][index]["data_of_field"]["is_relay_on"]
 															= resp["is_relay_on"]
-														
+
 														setData(temp_data)
 													}))
 												let temp_data = { ...data }
 												temp_data["fields_of_farm"][index]["data_of_field"]["is_relay_on"] =
 													!data["fields_of_farm"][index]["data_of_field"]["is_relay_on"]
-												
+
 												setData(temp_data)
 
 											}}
@@ -139,7 +168,7 @@ const styles = StyleSheet.create({
 	button_container: {
 		flex: 1,
 		width: width,
-		flexDirection:"row",
+		flexDirection: "row",
 		// backgroundColor:"red",
 		justifyContent: "space-evenly",
 		paddingTop: 20,
