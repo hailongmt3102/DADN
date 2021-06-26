@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, SafeAreaView, TextInput, TouchableHighlight, Alert } from 'react-native';
+import { View, Text, SafeAreaView, TextInput, TouchableHighlight, ScrollView } from 'react-native';
 
 import styles from '../assets/styles/st_login';
 
@@ -8,8 +8,10 @@ import axiosInstane from '../Context/Axios';
 import { set_access_token, set_refresh_token } from '../Context/AsyncStorage'
 
 import { stack_navigate } from '../Context/NavigationRoot';
+import CenterButton from '../Component/CenterButton';
 
-function userLogin({ navigation }) {
+
+function userLogin(props) {
   const formInfo = {
     email: '',
     password: ''
@@ -32,9 +34,9 @@ function userLogin({ navigation }) {
   }
 
   return (
-    <SafeAreaView>
+    <ScrollView>
       <Text style={styles.title}>
-        Đăng nhập
+        Log in
       </Text>
       <TextInput
         style={styles.text_input}
@@ -43,29 +45,35 @@ function userLogin({ navigation }) {
       />
       <TextInput
         style={styles.text_input}
-        placeholder="Mật khẩu"
+        secureTextEntry={true}
+        placeholder="Password"
         onChangeText={(password) => { formInfo.password = password }}
       />
-      <TouchableHighlight
-        style={styles.button}
-        onPress={onsubmit}
-      >
-        <Text style={styles.innerbtn}>
-          Đăng nhập
-      </Text>
-      </TouchableHighlight>
+      <CenterButton
+        action={onsubmit}
+        text={"Sign in"}
+        color={"#9A79FE"}
+      />
+
 
       <View>
         <Text style={styles.baseText}>
-          Quên mật khẩu ?  {" "}
+          Forget password ?  {" "}
           <Text style={styles.innerText}
-            onPress={() => { stack_navigate('ForgotPassScreen', {}) }}
+            onPress={() => { stack_navigate('ForgotPassScreen', { ...props }) }}
           >
-            Lấy lại mật khẩu
-        </Text>
+            reset password
+          </Text>
         </Text>
       </View>
-    </SafeAreaView>
+      <View>
+        <Text style={[styles.innerText, { alignSelf: "center", fontSize: 20 }]}
+          onPress={() => { stack_navigate('SignUp', { ...props }) }}
+        >
+          Đăng ký
+        </Text>
+      </View>
+    </ScrollView>
   )
 }
 

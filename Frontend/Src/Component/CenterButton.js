@@ -5,12 +5,14 @@ import {
     StyleSheet,
     Dimensions
 } from 'react-native';
-import React from "react"
+import React, { useContext } from "react"
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
+
+
+
 const CenterButton = (props) => {
     const { action, text, color } = props
-
 
     const styles = StyleSheet.create({
         button_container: {
@@ -35,6 +37,7 @@ const CenterButton = (props) => {
 
         },
     })
+
     return (
         <View style={styles.button_container}>
             <TouchableHighlight

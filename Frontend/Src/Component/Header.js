@@ -5,7 +5,7 @@ const img = require('../assets/images/burger.png');
 
 export default function Header(props) {
     const { label,navigation } = props
-    console.log("header props", props)
+    
     return (
         <View
             style={{

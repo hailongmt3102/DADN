@@ -24,6 +24,10 @@ target 'Frontend' do
 
   pod 'RNCCheckbox', :path => '../node_modules/@react-native-community/checkbox'
 
+  pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
+
+  pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
+
   target 'FrontendTests' do
     inherit! :complete
     # Pods for testing

@@ -21,20 +21,22 @@ const listFieldsScreen = (props) => {
 	const [data, setData] = useState({})
 
 
-	const get_data = async () => {
-		(axiosInstance.get("/api/farm/fields/").then(resp => {
+	const get_data =  () => {
+		return (axiosInstance.get("/api/farm/fields/").then(resp => {
 			setData(resp.data)
+			return resp
 		}))
 	}
 
 	const [refreshing, setRefreshing] = React.useState(false);
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
-		axiosInstance.get("/api/farm/renew/").then(resp => {
-			setData(resp.data)
-		}).then((data) => {
-			setRefreshing(false);
-		})
+		// axiosInstance.get("/api/farm/renew/").then(resp => {
+		// 	setData(resp.data)
+		// }).then((data) => {
+		// 	setRefreshing(false);
+		// })
+		get_data().then(() => setRefreshing(false));
 	}, []);
 
 	const [is_loaded, setLoaded] = useState(false)
@@ -51,7 +53,7 @@ const listFieldsScreen = (props) => {
 
 	useEffect(() => {
 		if (first_load)
-			setLoaded(!is_loaded)
+			setLoaded(true)
 	}, [data])
 
 	if (is_loaded) {
@@ -159,7 +161,6 @@ const styles = StyleSheet.create({
 		backgroundColor: '#FBFDFE',
 		width: width,
 		height: height,
-		// backgroundColor: "red",
 	},
 	image_container: {
 
@@ -180,7 +181,6 @@ const styles = StyleSheet.create({
 		alignItems: "center"
 	},
 	button: {
-		// flex:1,
 		borderRadius: 20,
 		height: 40,
 		width: 150,

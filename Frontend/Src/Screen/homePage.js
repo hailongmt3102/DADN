@@ -37,7 +37,6 @@ import ProductionList from "./Productions"
 const tab = createMaterialTopTabNavigator();
 
 function homePageScreen(props) {
-	// stack_navigate("CreateSensor", {field_id:1})
 	const [farm, setFarm] = useState({});
 	const [productions, setProductions] = useState();
 
@@ -49,66 +48,6 @@ function homePageScreen(props) {
 			<tab.Screen name="Sản phẩm" component={Productions} />
 		</tab.Navigator>
 	)
-}
-
-const Your_fame = (props) => {
-	const { farm, setFarm } = props.data
-	useEffect(
-		() => {
-			if (!farm["id"]) {
-				(axiosInstance.get("api/farm/").then(resp => {
-					setFarm(resp.data)
-				}))
-			}
-		}
-	)
-
-	return (
-		<SafeAreaView>
-			<ScrollView style={styles.container}>
-
-				<View style={styles.image_container}>
-					<Image source={{ uri: baseURL + farm["farm_image"] }}
-						style={{ width: 200, height: 200 }} />
-				</View>
-
-				<View style={styles.datas_container}>
-					{
-						Object.keys(farm).map((key, index) => {
-							const exclude = ["farm_image", "id"]
-
-							if (exclude.indexOf(key) == -1)
-								return (
-									< ListItem key={index} bottomDivider topDivider style={styles.data_container}>
-										<ListItem.Title key={100 + index} style={styles.data_title}>{key_set[key]}</ListItem.Title>
-										<ListItem.Subtitle key={200 + index} style={styles.data_subtitle}>{farm[key]}</ListItem.Subtitle>
-									</ListItem>
-								)
-
-						})
-					}
-				</View>
-
-				<View style={styles.button_container}>
-					<TouchableHighlight
-						style={styles.button}
-						onPress={() => { }}
-					>
-						<Text style={styles.innerbtn}>Edit</Text>
-					</TouchableHighlight>
-					<TouchableHighlight
-						style={styles.button}
-						onPress={() => { props.navigation.navigate("ListFieldsScreen", {...props}) }}
-					>
-						<Text style={styles.innerbtn}>Fields</Text>
-					</TouchableHighlight>
-
-				</View>
-
-			</ScrollView>
-		</SafeAreaView >
-	)
-
 }
 
 // get production from server .......

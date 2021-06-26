@@ -1,3 +1,5 @@
+import axiosInstance from "./Axios"
+
 export const key_set = {
     field_location_index: "FIELD NO.",
     farm_name: "NAME",
@@ -74,24 +76,34 @@ export const fulldate_of_date = (day) => {
     }
 }
 
-const validation = {
-    isEmailAddress:function(str) {
-        var pattern =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+export const validation = {
+    isEmailAddress: function (str) {
+        var pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         return pattern.test(str);  // returns a boolean
     },
-    isNotEmpty:function (str) {
-        var pattern =/\S+/;
+    isNotEmpty: function (str) {
+        var pattern = /\S+/;
         return pattern.test(str);  // returns a boolean
     },
-    isNumber:function(str) {
+    isNumber: function (str) {
         var pattern = /^\d+$/;
         return pattern.test(str);  // returns a boolean
     },
-    isSame:function(str1,str2){
+    isSame: function (str1, str2) {
         return str1 === str2;
     },
-    isInteger: (str) =>{
+    isInteger: (str) => {
         var pattern = /^\d+$/;
         return pattern.test(str);
     }
-};   
+};
+
+export function ToggleField(field_id, val) {
+    axiosInstance.post(
+        "/api/field/" + field_id + "/toggle/",
+        {
+            "relay":
+                val
+    }
+    )
+}

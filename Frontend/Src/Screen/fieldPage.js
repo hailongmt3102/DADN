@@ -12,7 +12,7 @@ import FieldLastedCrop from './fields/fieldLastedCrop'
 import FieldAllCrop from './fields/fieldAllCrop'
 import FieldSensors from './fields/fieldSensor'
 import CropDetail from "../Component/CropDetail"
-
+import ScheduleIrrigation from './ScheduleIrrigation';
 const Tab = createMaterialTopTabNavigator();
 
 const FieldPage = (props) => {
@@ -48,6 +48,9 @@ const FieldPage = (props) => {
             </Tab.Screen>
             <Tab.Screen name="Sensors">
                 {() => <FieldSensors  {...props} field_id={field_id} />}
+            </Tab.Screen>
+            <Tab.Screen name="Timer">
+                {() => <ScheduleIrrigation  {...props} field_id={field_id} />}
             </Tab.Screen>
 
 
