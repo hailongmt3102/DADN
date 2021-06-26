@@ -102,6 +102,12 @@ axiosInstance.interceptors.response.use(
 
 
 		}
+		try {
+			alert(error.respons.data)
+		}
+		catch {
+			aler("something went wrong")
+		}
 		return Promise.reject(error);
 	}
 );

@@ -5,9 +5,11 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.base import ModelState
 from django.utils.translation import gettext_lazy as _
 from datetime import date, datetime
-from Adafruit_IO import Client, Data, Feed
+from Adafruit_IO import Client, Data, Feed, model
 import requests
 import json
+import pytz
+from functools import reduce
 # Create your models here.
 
 
@@ -27,6 +29,10 @@ class Production(models.Model):
         upload_to=upload_production_iamge,
         default='production_image/default.jpg')
     production_period = models.IntegerField(default=0)
+    production_air_temp_lower_bound = models.FloatField(null=False)
+    production_air_temp_upper_bound = models.FloatField(null=False)
+    production_soil_humid_lower_bound = models.FloatField(null=False)
+    production_soil_humid_upper_bound = models.FloatField(null=False)
 
 
 class Farm(models.Model):
@@ -37,6 +43,7 @@ class Farm(models.Model):
         default='farm_image/default.jpg'
     )
     farm_create_at = models.DateTimeField(default=datetime.now)
+    farm_auto_mode = models.BooleanField(default=False)  # True auto_mode
 
     def __str__(self):
         return "Farm_"+str(self.id)
@@ -50,14 +57,14 @@ class Farm(models.Model):
 
 
 class SensorData(models.Model):
-    ground_humidity = models.FloatField(null=False)
-    air_humidity = models.FloatField(null=False)
-    air_temperature = models.FloatField(null=False)
-    is_relay_on = models.BooleanField(null=False)
+    ground_humidity = models.FloatField(null=True)
+    air_humidity = models.FloatField(null=True)
+    air_temperature = models.FloatField(null=True)
+    is_relay_on = models.BooleanField(null=True)
     record_time = models.DateTimeField(default=datetime.now)
-    data_ground_id = models.CharField(max_length=30)
-    data_air_id = models.CharField(max_length=30)
-    data_relay_id = models.CharField(max_length=30)
+    data_ground_id = models.CharField(max_length=30, null=True)
+    data_air_id = models.CharField(max_length=30, null=True)
+    data_relay_id = models.CharField(max_length=30, null=True)
     data_crop = models.ForeignKey(
         to="Crop",
         related_name='data_of_crop',
@@ -67,24 +74,6 @@ class SensorData(models.Model):
     data_field = models.ForeignKey(
         to="Field",
         related_name='data_of_field',
-        on_delete=models.CASCADE,
-        null=False
-    )
-    data_from_air_sensor = models.ForeignKey(
-        to="IOdevice",
-        related_name='air_sensor',
-        on_delete=models.CASCADE,
-        null=False
-    )
-    data_from_ground_sensor = models.ForeignKey(
-        to="IOdevice",
-        related_name='ground_sensor',
-        on_delete=models.CASCADE,
-        null=False
-    )
-    data_from_relay = models.ForeignKey(
-        to="IOdevice",
-        related_name='relay',
         on_delete=models.CASCADE,
         null=False
     )
@@ -113,39 +102,60 @@ class Field(models.Model):
             lambda device: device.collect(),
             devices
         ))
+
+        devices_datas = [i for i in devices_datas if i]
+
         id_set = [item[0] for item in devices_datas]
-        _data = self.latest_data()
-        if not _data or (len([
-                True for id in id_set if id in [
-                    _data.data_ground_id,
-                    _data.data_air_id,
-                    _data.data_relay_id
-                ]]) != 3):
+        _data: SensorData = self.latest_data()
+        if _data:
+            _time = _data.record_time
 
-            new_data = SensorData(
-                ground_humidity=devices_datas[0][1],
-                data_ground_id=devices_datas[0][0],
-                data_from_ground_sensor=devices_datas[0][2],
+        current_time = datetime.now(pytz.UTC)
+        if (
+            not _data
+            or _time.time().hour !=
+            current_time.time().hour
+            or (_time.time().hour == current_time.time().hour and current_time.date() != _time.date())
+        ):
+            _data = SensorData()
 
-                air_humidity=devices_datas[1][2],
-                air_temperature=devices_datas[1][1],
-                data_air_id=devices_datas[1][0],
-                data_from_air_sensor=devices_datas[1][3],
+        def average(lst):
+            try:
+                return sum([0] + lst) / (len(lst) if lst else 1)
+            except Exception:
+                return None
 
-                is_relay_on=devices_datas[2][1],
-                data_relay_id=devices_datas[2][0],
-                data_from_relay=devices_datas[2][2],
+        _data.ground_humidity = average(
+            [item[1] for item in devices_datas if item[-1] == 0])
 
-                data_crop=self.get_active_crop(),
-                data_field=self
-            )
-            new_data.save()
-            self.handle_data(new_data)
-            return new_data
+        _data.air_humidity = average(
+            [item[2] for item in devices_datas if item[-1] == 1])
+
+        _data.air_temperature = average(
+            [item[1] for item in devices_datas if item[-1] == 1])
+
+        _data.is_relay_on = reduce(
+            lambda x,y: bool(x) or bool(y),
+            [item[1] for item in devices_datas if item[-1] == 2],
+            False)
+
+        _data.data_field = self
+        _data.data_crop = self.get_active_crop()
+        _data.record_time = current_time
+
+        _data.save()
+
+        self.handle_data(_data)
+        return(_data)
 
     def handle_data(self, data: SensorData):
-
         is_relay_on = data.is_relay_on
+        suggestion = self.get_active_crop().suggest(data) if self.get_active_crop() else False
+        print(suggestion)
+        if self.field_farm.farm_auto_mode:
+            if suggestion ^ is_relay_on:
+                print("alter", is_relay_on, "to", suggestion, "from", self.id)
+                return self.toggle_relay(suggestion)
         history: WateringHistory = self.latest_water_history()
         if history:
             historry_ended = history.watering_end_time
@@ -174,6 +184,7 @@ class Field(models.Model):
         for device in field_relay:
             device.push_data(1 if _relay_value else 0)
         self.collect_data()
+        return True
 
     def latest_data(self):
         return SensorData.objects.filter(data_field=self.id).order_by("-id").first()
@@ -201,6 +212,18 @@ class Crop(models.Model):
     # 0 hydrated
     # 1 dehydrated
     # 3 harvested
+
+    def suggest(self, data: SensorData) -> bool:
+        product: Production = self.crop_production
+        if data.ground_humidity >= product.production_soil_humid_upper_bound:
+            return False
+        elif data.ground_humidity <= product.production_soil_humid_lower_bound:
+            return True
+        elif data.air_temperature >= product.production_air_temp_upper_bound:
+            return True
+        elif data.air_temperature <= product.production_air_temp_lower_bound:
+            return False
+        return data.is_relay_on
 
     def __str__(self):
         return "Crop_"+str(self.id)
@@ -252,7 +275,7 @@ class Feed(models.Model):
         on_delete=models.CASCADE,
         null=False
     )
-    
+
     def update_key(self):
         data = json.loads(requests.get(
             "http://dadn.esp32thanhdanh.link/").text)
@@ -314,7 +337,6 @@ class IODevice(models.Model):
             )
 
     def collect(self):
-        # aio = Client(self.feed_username, self.feed_key)
         self.check_feed()
         try:
             data = self.aio.receive(self.device_feed_name)
@@ -327,7 +349,7 @@ class IODevice(models.Model):
 
     def process_data(self, data):
         if self.is_my_device and self.device_type == 2:
-            return [data.id, int(data.value), self]
+            return [data.id, int(data.value), self, self.device_type]
         else:
             # print(data)
             res = [data.id]
@@ -336,7 +358,7 @@ class IODevice(models.Model):
                 lambda x: float(x),
                 value["data"].split("-")))
 
-            return res + [self]
+            return res + [self, self.device_type]
 
     def push_data(self, _data):
         format = [

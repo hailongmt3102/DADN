@@ -34,8 +34,6 @@ class DataSerializer(serializers.ModelSerializer):
             "record_time",
             "data_crop",
             "data_field",
-            "data_from_air_sensor",
-            "data_from_ground_sensor",
         ]
 
 

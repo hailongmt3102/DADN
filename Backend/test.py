@@ -1,6 +1,4 @@
-from Adafruit_IO import Client, Feed, Data
-
-aio = Client("CSE_BBC","aio_CraM232LDztkYUG2RxHySDg7ZUTr")
+from functools import reduce
 
 
-print(aio.receive("bk-iot-soil"))
+print (reduce(lambda x: 1,))
