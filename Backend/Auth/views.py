@@ -7,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .permissions import is_admin
 
+
 class UserCreate(APIView):
     permission_classes = [AllowAny]
 
