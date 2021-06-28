@@ -34,7 +34,7 @@ import {
 
 import FarmInfo from './FarmInfo'
 import ProductionList from "./Productions"
-import Feeds from './Feeds';
+import Feeds from './Feed';
 const tab = createMaterialTopTabNavigator();
 
 function homePageScreen(props) {
