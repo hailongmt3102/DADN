@@ -16,12 +16,13 @@ const CenterButton = (props) => {
 
     const styles = StyleSheet.create({
         button_container: {
-            flex: 1,
+            // flex: ,
             width: width,
             flexDirection: "row",
             justifyContent: "space-evenly",
             paddingTop: 20,
-            paddingBottom: 20
+            paddingBottom: 20,
+            // backgroundColor:"red"
         },
         button: {
             // flex:1,

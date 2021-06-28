@@ -34,6 +34,7 @@ import {
 
 import FarmInfo from './FarmInfo'
 import ProductionList from "./Productions"
+import Feeds from './Feeds';
 const tab = createMaterialTopTabNavigator();
 
 function homePageScreen(props) {
@@ -42,22 +43,14 @@ function homePageScreen(props) {
 
 	return (
 		<tab.Navigator>
-			<tab.Screen name="Nông trại">
+			<tab.Screen name="Farm">
 				{() => <FarmInfo {...props} data={{ farm, setFarm }} />}
 			</tab.Screen>
-			<tab.Screen name="Sản phẩm" component={Productions} />
+			<tab.Screen name="Feeds">
+				{() => <Feeds {...props} data={{ farm, setFarm }} />}
+			</tab.Screen>
+			<tab.Screen name="Product" component={ProductionList} />
 		</tab.Navigator>
-	)
-}
-
-// get production from server .......
-// TODO
-
-
-// TODO
-const Productions = () => {
-	return (
-		<ProductionList />
 	)
 }
 

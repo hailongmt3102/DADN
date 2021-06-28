@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     Switch,
     TouchableOpacity,
@@ -9,7 +9,8 @@ import {
     StyleSheet,
     Dimensions,
     TouchableHighlight,
-    ScrollView
+    ScrollView,
+    RefreshControl
 } from 'react-native';
 
 import {
@@ -22,12 +23,13 @@ import Request from '../Context/Request';
 import { ListItem, Avatar } from 'react-native-elements';
 import { key_set } from "../Context/MyTool"
 import { shouldUseActivityState } from 'react-native-screens';
+import { set } from 'react-native-reanimated';
 // import userLogin from './userLogin';
 export const MyList = (props) => {
 
 
     const { get_data, map_function } = props
-    
+
     const [data, set_data] = useState([])
     const [is_loaded, setLoaded] = useState(false)
     const [first_load, setFirstLoad] = useState(false)
@@ -44,18 +46,35 @@ export const MyList = (props) => {
 
     useEffect(() => {
         if (first_load)
-            setLoaded(!is_loaded)
+            {
+                setLoaded(!is_loaded)
+                setFirstLoad(false)
+            }
     }, [data])
+
+
+
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        get_data(set_data).then((sth) => setRefreshing(false));
+    }, []);
 
     if (is_loaded) {
 
         return (
             <ScrollView
                 style={styles.container}
-
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
             >
 
-                <View style={{}}>
+                <View style={styles.data_container}>
                     {
                         data.map((entrie, index) => {
 
@@ -127,18 +146,15 @@ const height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
+        // flex: 1,
         backgroundColor: '#FBFDFE',
         width: width,
-        paddingTop:10,
-        // height: height,
-        // backgroundColor: "red",
-        // backgroundColor:"red"
+        paddingTop: 10,
     },
     image_container: {
 
     },
-    fields_container: {},
+    data_container: {},
 
     field_container: {},
     avatar: { width: 20 },
@@ -146,7 +162,7 @@ const styles = StyleSheet.create({
         flex: 1, flexDirection: "row",
         alignItems: "center"
     },
-    
+
 })
 
 

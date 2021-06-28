@@ -28,7 +28,7 @@ function userLogin(props) {
         set_refresh_token(response.data.refresh);
         axiosInstane.defaults.headers['Authorization'] =
           'JWT ' + response.data.access;
-        stack_navigate("HomePageScreen", {})
+        props.navigation.push("HomePageScreen")
       })
 
   }
@@ -70,7 +70,7 @@ function userLogin(props) {
         <Text style={[styles.innerText, { alignSelf: "center", fontSize: 20 }]}
           onPress={() => { stack_navigate('SignUp', { ...props }) }}
         >
-          Đăng ký
+          Sign up
         </Text>
       </View>
     </ScrollView>

@@ -31,7 +31,8 @@ class FeedSerializer (serializers.ModelSerializer):
         fields = [
             "id",
             "feed_username",
-            "feed_key"
+            "feed_key",
+            "feed_farm"
         ]
 
 

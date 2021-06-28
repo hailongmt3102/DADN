@@ -52,6 +52,8 @@ import ScheduleIrrigation from './ScheduleIrrigation';
 import BackgroundTimer from 'react-native-background-timer';
 import CreateTask from './AddTask';
 import SignUp from './SignUp';
+import EditDeleteFeed from './EditFeed';
+import CreateFeed from './CreateFeed';
 const Stack = createStackNavigator();
 export default function ScreensStack(props) {
 	return (
@@ -134,6 +136,22 @@ export default function ScreensStack(props) {
 					headerTitle: _props => <Header {..._props} {...props} label="New timer" />
 				}}
 			/>
+
+			<Stack.Screen
+				name="EditDeleteFeed"
+				component={EditDeleteFeed}
+				options={{
+					headerTitle: _props => <Header {..._props} {...props} label="Edit feed" />
+				}}
+			/>
+			<Stack.Screen
+				name="CreateFeed"
+				component={CreateFeed}
+				options={{
+					headerTitle: _props => <Header {..._props} {...props} label="New feed" />
+				}}
+			/>
+
 			<Stack.Screen
 				name="SignUp"
 				component={SignUp}

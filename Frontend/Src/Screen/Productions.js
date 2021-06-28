@@ -5,14 +5,14 @@ import {
 } from "../Component/MyList"
 import {
     stack_navigate
-}from "../Context/NavigationRoot"
+} from "../Context/NavigationRoot"
 const ProductionList = (props) => {
 
 
 
     const get_data = (set_function) => {
 
-        (axiosInstance.get(
+        return (axiosInstance.get(
             ("/api/production/")
         ).then(resp => {
             set_function(resp.data)
@@ -26,7 +26,7 @@ const ProductionList = (props) => {
             title: (new String(data["production_name"])).toUpperCase(),
             image: data["production_image"],
             subtitle: null,
-            navigate_function: () => {stack_navigate("ProductionDetail", {production_id:data["id"]}) }
+            navigate_function: () => { stack_navigate("ProductionDetail", { production_id: data["id"] }) }
         }
     }
     return (
