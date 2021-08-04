@@ -1,3 +1,10 @@
 {
-    "python.pythonPath": "env\\Scripts\\python.exe"
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "farm",
+            "database": "${workspaceFolder:Backend}/db.sqlite3"
+        }
+    ]
 }

@@ -1,0 +1,299 @@
+// import React, {
+//     useState
+// } from 'react'
+// import {
+//     ScrollView,
+//     Text,
+//     StyleSheet,
+// } from 'react-native'
+
+// import axiosInstance from '../../Context/Axios'
+// import Button from '../../Component/Button'
+// import ListView from '../../Component/ListView'
+// import { key_set ,dateToDDMMYYYY ,stringToDate } from '../../Context/MyTool'
+// import Switch from '../../Component/Switch'
+
+
+// export default function FieldInfo(props) {
+//     const { fieldUUID } = props;
+//     const [reRender, setReRender] = useS
+//     const get_data = async () => {
+
+//         const data = await axiosInstance.get("/api/farms/fields/get", { params: { uuid: fieldUUID } })
+//             .then(resp => {
+//                 return resp.data.data
+//             })
+
+//         return handleData(data)
+//     }
+
+//     const convertDate = (value) => {
+// 		try {
+// 			return dateToDDMMYYYY(stringToDate(value))
+// 		} catch (exc) {
+// 			return value
+// 		}
+// 	}
+
+//     const handleRelay =(value)=>{
+//         return (
+//             <Switch
+//                 value = {value}
+//                 onPress = {()=>{}}
+//             />
+//         )
+//     }
+
+
+
+//     const handleData = (data) => {
+//         if (data) {
+//             return [
+//                 {key:'index',value:data.location_index},
+//                 {key:'length',value:data['length']},
+//                 {key:'width',value:data['width']},
+//                 { key: 'air_temperature', value: data.latest_data.air_temperature },
+//                 { key: 'air_humidity', value: data.latest_data.air_humidity },
+//                 { key: 'relay', value: handleRelay( data.latest_data.relay) },
+//                 { key: 'ground_humidity', value: data.latest_data.ground_humidity },
+//                 { key: 'updated_at', value:  convertDate(data.latest_data.updated_at) },
+//             ]
+//         }
+//     }
+
+
+//     const map_function = (data) => {
+//         return {
+//             title: key_set[data.key] || (new String(data.key)).toUpperCase(),
+//             image: null,
+//             subtitle: <Text>{data.value}</Text>,
+//             navigate_function: () => { }
+//         }
+//     }
+
+
+//     return (
+//         <ScrollView>
+//             <ListView
+//                 get_data={get_data}
+//                 map_function={map_function}
+//             />
+//             <Button
+//                 buttonStyle={{ alignSelf: 'center', marginTop: 10 }}
+//                 textContent={'Fields'}
+//                 onPress={() => { props.navigation.push('FieldsList', { farmUUID: farmUUID }) }}
+//             />
+//         </ScrollView>
+//     )
+
+// }
+
+// const styles = StyleSheet.create({
+
+
+// })
+
+import React, { Component } from 'react';
+import {
+	TouchableOpacity,
+	View,
+	Image,
+	StyleSheet,
+	Dimensions,
+	ScrollView,
+	RefreshControl
+} from 'react-native';
+
+import axiosInstance from '../../Context/Axios'
+
+import { ListItem, Avatar } from 'react-native-elements';
+
+const convertDate = (value) => {
+	try {
+		return dateToDDMMYYYY(stringToDate(value))
+	} catch (exc) {
+		return value
+	}
+}
+
+class ListView extends Component {
+	constructor(props) {
+		super(props)
+		this.state = { refreshing: true }
+	}
+
+	componentDidMount() {
+		this.onRefresh()
+	}
+
+	handleData = (data) => {
+		if (data) {
+
+			return [
+				{ key: 'index', value: data.location_index },
+				{ key: 'length', value: data['length'] },
+				{ key: 'width', value: data['width'] },
+				{ key: 'air_temperature', value: data.latest_data.air_temperature },
+				{ key: 'air_humidity', value: data.latest_data.air_humidity },
+				{ key: 'relay', value: data.latest_data.relay },
+				{ key: 'ground_humidity', value: data.latest_data.ground_humidity },
+				{ key: 'updated_at', value: convertDate(data.latest_data.updated_at) },
+			]
+		}
+	}
+
+	handleRelayChange = () => {
+
+	}
+
+	// handleRelay = (value) => {
+	// 	return (
+	// 		<Switch
+	// 			value={this.state.}
+	// 			onPress={this.handleRelayChange}
+	// 		/>
+	// 	)
+	// }
+
+	getData = async () => {
+		const data = await axiosInstance.get("/api/farms/fields/get", { params: { uuid: this.props.fieldUUID } })
+			.then(resp => {
+				return resp.data.data
+			})
+		return this.handleData(data)
+	}
+
+
+
+	onRefresh = () => {
+		this.setState({ refreshing: true });
+		this.getData().then(data => {
+			// console.log(data)
+			this.setState({
+				data,
+				refreshing: false
+			});
+		});
+	}
+
+
+	contentGenerator = () => {
+		if (this.state.data) {
+			if (this.state.data.length == 0) {
+				return (
+					<ListItem bottomDivider>
+						<ListItem.Title style={[{ marginTop: 10 }]}>
+							No data to display
+						</ListItem.Title>
+					</ListItem>
+				)
+			}
+			else {
+				return this.state.data.map((entrie, index) => {
+
+					const entrie_data = this.props.map_function(entrie)
+					const { image, title, subtitle, navigate_function } = entrie_data
+
+					return (
+						<ListItem key={entrie_data.key || index} style={styles.field_container} bottomDivider>
+
+							<TouchableOpacity
+								onPress={navigate_function}
+								style={[styles.field_data_title, entrie_data.leftStyle]}>
+								{
+									image && (
+										<Image
+											source={{ uri: image }}
+											style={[{ width: 50, height: 50, borderRadius: 50, borderWidth: 1 }, entrie_data.imageStyle]}
+										/>
+									)
+								}
+								{
+									title && (
+										<ListItem.Title style={[{ paddingLeft: 10 }, entrie_data.titleStyle]}>
+											{title}
+										</ListItem.Title>
+									)
+								}
+							</TouchableOpacity>
+							{
+								subtitle && (
+									<ListItem.Subtitle style={[entrie_data.rightStyle]}>
+										{subtitle}
+									</ListItem.Subtitle>
+								)
+							}
+						</ListItem>
+					)
+				})
+			)
+			}
+			
+		}
+		else {
+			return (
+				<ListItem bottomDivider>
+					<ListItem.Title style={[{ marginTop: 10 }]}>
+						Loading
+					</ListItem.Title>
+				</ListItem>
+			)
+		}
+	}
+
+	render() {
+
+
+		return (
+			<ScrollView
+				style={styles.container}
+				refreshControl={
+					<RefreshControl
+						refreshing={this.state.refreshing}
+						onRefresh={this.onRefresh}
+					/>
+				}
+			>
+
+				<View style={styles.data_container}>
+					{
+						this.contentGenerator()
+					}
+				</View>
+			</ScrollView>
+		)
+
+	}
+}
+
+export default ListView;
+
+const width = Dimensions.get("window").width;
+
+const styles = StyleSheet.create({
+	container: {
+		// flex: 1,
+		// // flexDirection: 'row',
+		// backgroundColor: 'red',
+		// // '#FBFDFE',
+		// width: width,
+		// paddingTop: 20,
+	},
+	image_container: {
+
+	},
+	data_container: {
+		// backgroundColor:'black',
+	},
+
+	field_container: {},
+	avatar: {
+		width: 20
+	},
+	field_data_title: {
+		flex: 1,
+		flexDirection: "row",
+		alignItems: "center"
+	},
+})
+

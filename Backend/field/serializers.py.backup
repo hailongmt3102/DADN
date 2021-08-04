@@ -1,0 +1,34 @@
+from rest_framework import serializers
+from .models import Data, Field
+from farm.models import Farm
+
+
+class BaseFarmSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Farm
+        fields = ['uuid', 'name']
+
+
+class DataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Data
+        exclude = ['id']
+
+
+class FieldSerializer(serializers.ModelSerializer):
+
+    farm = BaseFarmSerializer()
+
+    class Meta:
+        model = Field
+        exclude = ['id']
+        read_only_fields = ['id', 'uuid']
+
+    def to_representation(self, instance):
+        
+        data =  super().to_representation(instance)
+        
+        
+
+        return data
