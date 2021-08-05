@@ -1,4 +1,3 @@
-from Backend.farm import permissions
 from rest_framework.decorators import api_view, permission_classes
 from user.permissions import UserPermissions
 from core.utils import response_gen

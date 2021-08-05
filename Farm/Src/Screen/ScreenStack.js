@@ -51,13 +51,22 @@ import CreateField from './Field/CreateField';
 import Crop from './Crop/Crop';
 import CreateCrop from './Crop/CreateCrop';
 import CreateTask from './Field/CreateTask';
+import CheckToken from './CheckToken';
 
 const Stack = createStackNavigator();
 export default function ScreensStack(props) {
 	
 	return (
 		// <NavigationContainer ref={stack_navigation_ref} >
-		<Stack.Navigator initialRouteName='Home'>
+		<Stack.Navigator initialRouteName='CheckToken'>
+
+			<Stack.Screen
+				name="CheckToken"
+				component={CheckToken}
+				options={{
+					headerShown: false
+				}}
+			/>
 
 			<Stack.Screen
 				name="Home"

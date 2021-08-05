@@ -36,7 +36,7 @@ const ProductionInfo = (props) => {
         ).then(resp => resp.data.data)
 
         const array = [
-            'image','name', 'period', 'temp_lower_bound','temp_upper_bound',
+            'image', 'name', 'period', 'temp_lower_bound', 'temp_upper_bound',
             'soil_humid_lower_bound', 'soil_humid_upper_bound',]
         let returnData = array.map((key) => {
             return {
@@ -45,13 +45,16 @@ const ProductionInfo = (props) => {
             }
         })
 
-   
+
         return returnData
     }
 
     const map_function = (data) => {
         if (data.key == 'image')
             return {
+                leftStyle: {
+                    flexDirection: 'column'
+                },
                 titleStyle: {
                     flex: 1,
                     paddingLeft: 0
@@ -78,6 +81,7 @@ const ProductionInfo = (props) => {
     return (
         <ScrollView>
             <ListView
+                static={true}
                 get_data={get_data}
                 map_function={map_function}
             />

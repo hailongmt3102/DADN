@@ -109,8 +109,13 @@ axiosInstance.interceptors.response.use(
 				}
 			}
 
+			console.log('hello')
+
+			while (stack_navigation_ref.current.canGoBack())
+				stack_navigation_ref.current.pop()
+
 			stack_navigate('Login', {})
-			return Promise.resolve({});
+			return Promise.reject({});
 
 		}
 		else {

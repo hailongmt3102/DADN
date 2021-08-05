@@ -3,7 +3,7 @@ import { View, Text, SafeAreaView, TextInput, TouchableHighlight, ScrollView } f
 
 import styles from '../../assets/styles/st_login';
 
-import axiosInstane from '../../Context/Axios';
+import axiosInstance from '../../Context/Axios';
 
 import { set_access_token, set_refresh_token } from '../../Context/AsyncStorage'
 
@@ -19,7 +19,7 @@ function Login(props) {
 
 	const onsubmit = async () => {
 
-		axiosInstane
+		axiosInstance
 			.post('/api/user/auth/sign_in', state)
 			.then(response => response.data)
 			.then((response) => {
@@ -28,7 +28,7 @@ function Login(props) {
 
 				set_refresh_token(response.data.refresh);
 
-				axiosInstane.defaults.headers['Authorization'] =
+				axiosInstance.defaults.headers['Authorization'] =
 					'Bearer ' + response.data.access;
 
 				props.navigation.pop();

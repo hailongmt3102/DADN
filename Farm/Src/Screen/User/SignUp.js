@@ -19,10 +19,10 @@ function SignUp(props) {
 
     const onsubmit = () => {
         axiosInstane
-            .post('auth/create/', signup)
+            .post('/api/user/create', signup)
             .then((response) => {
                 alert("Successful sign-up")
-                stack_navigate('userLogin', { ...props })
+                props.navigation.push('Login')
             })
 
     }

@@ -77,6 +77,6 @@ export const logout = async () => {
         return true;
     }
     catch (exception) {
-        return false;
+        return true;
     }
 }

@@ -20,7 +20,7 @@ export default function FarmInfo(props) {
 	const { farmUUID } = props;
 
 	const get_data = async () => {
-		
+
 		const data = await axiosInstance.post("/api/farms/get", { uuid: farmUUID })
 			.then(resp => {
 				return resp.data.data
@@ -43,16 +43,26 @@ export default function FarmInfo(props) {
 	const map_function = (data) => {
 		if (data.key == 'image')
 			return {
+				leftStyle:{
+					flexDirection:'column'
+				},
 				titleStyle: {
-					flex: 1,
-					paddingLeft: 0
-					// backgroundColor:'red'
+				
 				},
 				title: (
-					<View style={[styles.image_container, {  width: 330 }]}>
-						<Image source={{ uri: data.value }}
-							style={{ width: 200, height: 200 }} />
-					</View>),
+					<View style={[
+						styles.image_container, 
+						{ 
+							flex:1,
+							width: 330, 
+							}
+						]}>
+					<Image
+						source={{ uri: data.value }}
+						style={{ width: 200, height: 200 }}
+					/>
+					</View>
+				),
 				image: null,
 				subtitle: null,
 				navigate_function: null
@@ -70,14 +80,14 @@ export default function FarmInfo(props) {
 	return (
 		<ScrollView>
 			<ListView
-			static={true}
+				static={true}
 				get_data={get_data}
 				map_function={map_function}
 			/>
 			<Button
-				buttonStyle={{alignSelf:'center',marginTop:10}}
-				textContent = {'Fields'}
-				onPress={()=>{props.navigation.push('FieldsList',{farmUUID:farmUUID})}}
+				buttonStyle={{ alignSelf: 'center', marginTop: 10 }}
+				textContent={'Fields'}
+				onPress={() => { props.navigation.push('FieldsList', { farmUUID: farmUUID }) }}
 			/>
 		</ScrollView>
 	)

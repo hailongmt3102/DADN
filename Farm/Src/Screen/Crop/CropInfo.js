@@ -72,11 +72,9 @@ export default function CropInfo(props) {
     const map_function = (data) => {
         if (data.key == 'image')
             return {
-                titleStyle: {
-                    flex: 1,
-                    paddingLeft: 0
-
-                },
+                leftStyle:{
+					flexDirection:'column'
+				},
                 title: (
                     <View style={[styles.image_container, { width: 330 }]}>
                         <Image source={{ uri: data.value }}
@@ -107,10 +105,10 @@ export default function CropInfo(props) {
 
     const [refreshing, setRefreshing] = useState(false);
 
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
+    const onRefresh = useCallback(async () => {
+        await setRefreshing(true);
+        await setRerender(!rerender)
         get_data().then(async () => {
-            await setRerender(!rerender)
             setRefreshing(false)
         });
     }, []);

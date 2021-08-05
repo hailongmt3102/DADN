@@ -31,11 +31,12 @@ class ListView extends Component {
 	componentDidUpdate(prevProps) {
 		// Typical usage (don't forget to compare props):
 		if (this.props.reRender !== prevProps.reRender) {
+			console.log('refresh')
 			this.getData();
 		}
 	}
 
-	getData = async () =>{
+	getData =  () =>{
 		return this.props.get_data().then(data => {
 			this.setState({
 				data
@@ -82,7 +83,7 @@ class ListView extends Component {
 								}
 								{
 									title && (
-										<ListItem.Title style={[{ paddingLeft: 10 }, entrie_data.titleStyle]}>
+										<ListItem.Title style={[{ marginLeft: 10 }, entrie_data.titleStyle]}>
 											{title}
 										</ListItem.Title>
 									)
