@@ -19,6 +19,7 @@ sensor_url_patterns = [
     path('/get', sensor_api.sensor_get, name='read_sensor'),
     path('/matrix', sensor_api.sensor_matrix, name='matrix_sensor'),
     path('/create', sensor_api.sensor_create, name='create_sensor'),
+    path('/delete', sensor_api.sensor_delete, name='delete_sensor'),
 ]
 
 urlpatterns = [

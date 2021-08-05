@@ -23,6 +23,9 @@ const SensorsList = (props) => {
 
         if (v == 0)
             props.navigation.push('UpdateFeed', { farmUUID: farmUUID, feedUUID: uuid })
+        else if (v == 1){
+            axiosInstance.get('/api/farms/fields/sensors/delete',{params:{uuid}})
+        }
     }
 
     const map_function = (data) => {

@@ -48,3 +48,14 @@ def sensor_create(request, *args, **kargs):
     
     return response_gen(SensorSerilizer(sensor).data)
 
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def sensor_delete(request, *args,**kargs):
+    sensor_uuid = request.query_params.get('uuid')
+    sensor:Sensor = Sensor.objects.get(uuid = sensor_uuid)
+
+    if not is_sensor_related(request.user, sensor): raise exceptions.PermissionDenied()
+
+    sensor.delete()
+
+    return response_gen()

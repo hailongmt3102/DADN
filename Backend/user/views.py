@@ -1,3 +1,5 @@
+from Backend.farm import permissions
+from rest_framework.decorators import api_view, permission_classes
 from user.permissions import UserPermissions
 from core.utils import response_gen
 from rest_framework.permissions import (
@@ -105,3 +107,8 @@ class MyTokenRefressView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
         data = super().post(request, *args, **kwargs).data
         return response_gen(data=data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_access_token(request, *args,**kargs):
+    return response_gen()
