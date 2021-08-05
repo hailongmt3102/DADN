@@ -194,17 +194,19 @@ class Crop(ABCmodel):
     )
 
     def suggest(self, data) -> bool:
-        product: Production = self.production
-        if data.ground_humidity >= product.soil_humid_upper_bound:
+        try:
+            product: Production = self.production
+            if data.ground_humidity >= product.soil_humid_upper_bound:
+                return False
+            elif data.ground_humidity <= product.soil_humid_lower_bound:
+                return True
+            elif data.air_temperature >= product.temp_upper_bound:
+                return True
+            elif data.air_temperature <= product.temp_lower_bound:
+                return False
+            return data.relay
+        except Exception as exc:
             return False
-        elif data.ground_humidity <= product.soil_humid_lower_bound:
-            return True
-        elif data.air_temperature >= product.temp_upper_bound:
-            return True
-        elif data.air_temperature <= product.temp_lower_bound:
-            return False
-        return data.relay
-
     def __str__(self):
         return "Crop_"+str(self.id)
 

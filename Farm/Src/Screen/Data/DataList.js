@@ -1,15 +1,20 @@
 import React from 'react';
 import axiosInstance from '../../Context/Axios';
 import ListView from '../../Component/ListView';
-
+import { stringToDate } from '../../Context/MyTool';
 const DataList = (props) => {
     const {fieldUUID} = props
+    const {cropUUID} = props
 
     const get_data = async () => {
 
-        const data = await axiosInstance.post("/api/farms/fields/datas/matrix",{
-            field_uuid:fieldUUID
-        })
+        const query_data = {}
+        if (fieldUUID)
+        query_data.field_uuid = fieldUUID
+        if (cropUUID)
+            query_data.crop_uuid = cropUUID
+
+        const data = await axiosInstance.post("/api/farms/fields/datas/matrix",query_data)
             .then(resp => {
                 return resp.data.data
             })
@@ -19,7 +24,7 @@ const DataList = (props) => {
 
     const convertDate = (value)=> {
         try {
-            return dateToDDMMYYYY(stringToDate(value))
+            return stringToDate(value).toLocaleString()
         }catch (exc) {
             return value
         }

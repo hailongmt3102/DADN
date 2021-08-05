@@ -1,10 +1,15 @@
 from django.urls import path, include
-from .views import field_api, crop_api, sensor_api, data_api
+from .views import field_api, crop_api, sensor_api, data_api, irrigation_api
 
 data_url_patterns = [
     path('/matrix', data_api.data_matrix, name='matrix_data'),
     path('/get', data_api.data_get, name='get_data'),
 
+]
+
+irrigation_url_patterns = [
+    path('/matrix', irrigation_api.irrigation_matrix, name='matrix_irrigation'),
+    path('/get', irrigation_api.irrigation_get, name='get_irrigation'),
 ]
 
 crop_url_patterns = [
@@ -30,5 +35,5 @@ urlpatterns = [
     path('/crops',include(crop_url_patterns)),
     path('/sensors',include(sensor_url_patterns)),
     path('/datas',include(data_url_patterns)),
-    
+    path('/irrigations',include(irrigation_url_patterns)),
 ]

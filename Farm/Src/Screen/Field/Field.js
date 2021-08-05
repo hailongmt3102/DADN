@@ -15,7 +15,7 @@ import SensorsList from '../Sensor/SensorsList';
 import DataList from '../Data/DataList';
 import CropsList from '../Crop/CropsList';
 import ScheduleIrrigation from './ScheduleIrrigation';
-
+import IrrigationsList from '../Irrigation/IrrigationsList';
 const Tab = createMaterialTopTabNavigator();
 
 const Field = (props) => {
@@ -58,6 +58,9 @@ const Field = (props) => {
             </Tab.Screen>
             <Tab.Screen name="Datas">
                 {() => <DataList  {...props} fieldUUID={fieldUUID} />}
+            </Tab.Screen>
+            <Tab.Screen name="Irrigations">
+                {() => <IrrigationsList  {...props} fieldUUID={fieldUUID} />}
             </Tab.Screen>
             {/* 
             <Tab.Screen name="Timer">

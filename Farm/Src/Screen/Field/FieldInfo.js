@@ -57,16 +57,25 @@ const FieldInfo = (props) => {
 	]
 
 	const handleRelayChange = () => {
+		const relay =  !data['relay']
 		axiosInstance.post("/api/farms/fields/toggle", {
 			'uuid': fieldUUID,
-			"relay": !data["relay"]
+			"relay": relay
 		})
 			.then(
-				resp => handleData(resp.data.data)
-			).then(data => {
-				setData(data)
+				resp => {
+					const data = resp.data.data
+					if (data != 'Fail')
+						return handleData(resp.data.data)
+					
+						else return null 
+					}
+			).then(handle_data => {
+				if (handle_data)
+					setData(handle_data)
+				else	setData({ ...data, relay: !relay})
 			})
-		setData({ ...data, relay: !data['relay'] })
+		setData({ ...data, relay: relay})
 		
 	}
 

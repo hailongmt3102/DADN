@@ -1,7 +1,7 @@
 from farm.permissions.farm_permissions import is_farm_related
 from rest_framework import permissions
 from rest_framework.request import Request
-from field.models import Field
+from field.models import Crop, Field
 from rest_framework.decorators import api_view, permission_classes
 from field.permissions import is_field_related
 from field.serializers import FieldSerializer
@@ -58,16 +58,27 @@ def field_create(request, *args, **kargs):
 def field_toggle(request, *args, **kargs):
     try:
         data = request.data
-
+        relay = data.get('relay')
         field:Field = Field.objects.get(uuid=data.get('uuid',None))
+        farm:Farm = field.farm
+
         if not is_field_related(request.user, field): raise PermissionDenied()
 
-        print
-        field.toggle_relay(data.get('relay'))
-        
-        return response_gen(FieldSerializer(field).data)
+        if farm.auto_mode:
+            data = field.latest_data()
+            crop:Crop = field.current_crop()
+            if crop:
+                suggest = crop.suggest(data)
+                if not suggest ^ relay:
+                    field.toggle_relay(data.get('relay'))
+        else:
+            field.toggle_relay(data.get('relay'))
+
+        data =  FieldSerializer(field).data
+        return response_gen(data)
     except Exception as exception:
-        return response_gen(message='Fail')
+        print(exception)
+        return response_gen(data='Fail')
 
 
 

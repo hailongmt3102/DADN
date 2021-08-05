@@ -36,6 +36,9 @@ export const key_set = {
     index                       : 'INDEX',
     width                       : 'WIDTH',
     length                      : 'LENGTH',
+    start_at                    : 'START AT',
+    end_at                      : 'END AT',
+    amount                      : 'AMOUNT',
 
 }
 

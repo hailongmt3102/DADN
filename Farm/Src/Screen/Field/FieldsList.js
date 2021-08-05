@@ -34,14 +34,16 @@ const FieldsList = (props) => {
 	}
 
 	const handleData = (data) => {
-		if (data) {
+	
+		if (data ) {
 			const map_data = {}
 			data.map((entry, index) => {
 				map_data[entry.uuid] = parseData(entry)
 			})
 			return map_data
 		}
-		else return {}
+		return {}
+
 	}
 
 	const get_data = async () => {
@@ -49,7 +51,7 @@ const FieldsList = (props) => {
 		const resp_data = await axiosInstance.post(
 			"api/farms/fields/matrix", { farm_uuid: farmUUID }
 		).then(resp => resp.data.data)
-		console.log(resp_data)
+		
 		setData(handleData(resp_data));
 	}
 
@@ -68,26 +70,39 @@ const FieldsList = (props) => {
 		get_data()
 	}, [])
 
+
 	const handleRelayChange = (key) => {
-		console.log(data)
-		console.log(key)
-		console.log(data[key])
+
 		const relay = !data[key]["relay"]
 		axiosInstance.post("/api/farms/fields/toggle", {
-			'uuid':key,
+			'uuid': key,
 			"relay": relay
 		})
 			.then(
-				resp => handleData(resp.data.data)
-			).then(data => {
-				setData(data)
+				resp => {
+					if (resp.data.data!= 'Fail')
+						return parseData(resp.data.data)
+					else return null
+				}
+			).then(handled_data => {
+				if (handled_data) {
+					
+					const new_data = { ...data }
+					new_data[key] =handled_data
+					setData(new_data)
+				}
+				else {
+					const new_data = { ...data }
+					new_data[key] = { ...data[key], relay: !relay }
+					setData(new_data)
+				}
 			})
-			const new_data = {...data}
-			new_data[key] = {...data[key],relay:relay}
-			setData(new_data)
+		const new_data = { ...data }
+		new_data[key] = { ...data[key], relay: relay }
+		setData(new_data)
 	}
 
-	const contentGen=() => {
+	const contentGen = () => {
 		if (data) {
 			return (Object.keys(data).map((key) => {
 				return (
@@ -96,7 +111,7 @@ const FieldsList = (props) => {
 						<TouchableOpacity
 
 							onPress={() => {
-								props.navigation.push('Field',{fieldUUID:key,farmUUID:farmUUID})
+								props.navigation.push('Field', { fieldUUID: key, farmUUID: farmUUID })
 							}}
 							style={styles.field_data_title}>
 							{/* <Image
@@ -110,11 +125,11 @@ const FieldsList = (props) => {
 
 						<ListItem.Subtitle>
 							<Switch
-								
-								value = {data[key].relay}
-								onPress={()=>handleRelayChange(key)}
 
-									
+								value={data[key].relay}
+								onPress={() => handleRelayChange(key)}
+
+
 							/>
 						</ListItem.Subtitle>
 					</ListItem>
@@ -153,9 +168,9 @@ const FieldsList = (props) => {
 			</View>
 
 			<Button
-			textContent={'New'}
-			buttonStyle ={{alignSelf:'center'}}
-			onPress={()=>{props.navigation.push('CreateField',{farmUUID})}}
+				textContent={'New'}
+				buttonStyle={{ alignSelf: 'center' }}
+				onPress={() => { props.navigation.push('CreateField', { farmUUID }) }}
 			/>
 
 		</ScrollView>

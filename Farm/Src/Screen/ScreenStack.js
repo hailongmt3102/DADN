@@ -52,6 +52,7 @@ import Crop from './Crop/Crop';
 import CreateCrop from './Crop/CreateCrop';
 import CreateTask from './Field/CreateTask';
 import CheckToken from './CheckToken';
+import IrrigationInfo from './Irrigation/IrrigationInfo';
 
 const Stack = createStackNavigator();
 export default function ScreensStack(props) {
@@ -121,6 +122,14 @@ export default function ScreensStack(props) {
 				component={DataInfo}
 				options={{
 					headerTitle: _props => <Header {...props} label="Data" />
+				}}
+			/>
+
+			<Stack.Screen
+				name="IrrigationInfo"
+				component={IrrigationInfo}
+				options={{
+					headerTitle: _props => <Header {...props} label="Irrigation Info" />
 				}}
 			/>
 
