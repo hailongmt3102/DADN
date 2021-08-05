@@ -70,6 +70,7 @@ export default function FarmInfo(props) {
 	return (
 		<ScrollView>
 			<ListView
+			static={true}
 				get_data={get_data}
 				map_function={map_function}
 			/>

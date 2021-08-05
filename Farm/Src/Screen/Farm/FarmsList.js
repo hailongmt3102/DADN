@@ -31,6 +31,7 @@ const FarmsList = (props) => {
     return (
         <ScrollView>
             <ListView
+         
                 get_data={get_data}
                 map_function={map_function}
             />

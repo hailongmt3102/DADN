@@ -13,6 +13,7 @@ import {
 import axiosInstance, { baseURL } from "../../Context/Axios";
 import { ListItem } from 'react-native-elements';
 import Switch from '../../Component/Switch';
+import Button from '../../Component/Button';
 // import userLogin from './userLogin';
 const FieldsList = (props) => {
 	const { farmUUID } = props.route.params
@@ -150,6 +151,12 @@ const FieldsList = (props) => {
 					contentGen()
 				}
 			</View>
+
+			<Button
+			textContent={'New'}
+			buttonStyle ={{alignSelf:'center'}}
+			onPress={()=>{props.navigation.push('CreateField',{farmUUID})}}
+			/>
 
 		</ScrollView>
 	)

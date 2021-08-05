@@ -24,7 +24,8 @@ const Button = (props) => {
 			alignItems: 'center',
 			backgroundColor: '#9A79FE',
 			justifyContent: 'space-evenly',
-			margin: "auto",
+			marginTop: 10,
+			marginBottom: 10,
 			textAlign: 'center',
 			flexDirection: 'row',
 

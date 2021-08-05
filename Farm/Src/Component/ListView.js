@@ -21,23 +21,40 @@ class ListView extends Component {
 	constructor(props) {
 		super(props)
 		this.state = { refreshing: true }
+
 	}
 
 	componentDidMount() {
-		this.onRefresh()
+		this.onRefresh();
 	}
 
-	onRefresh = () => {
-		this.setState({ refreshing: true });
-		this.props.get_data().then(data => {
+	componentDidUpdate(prevProps) {
+		// Typical usage (don't forget to compare props):
+		if (this.props.reRender !== prevProps.reRender) {
+			this.getData();
+		}
+	}
+
+	getData = async () =>{
+		return this.props.get_data().then(data => {
 			this.setState({
-				data,
-				refreshing: false
+				data
 			});
 		});
 	}
 
+	onRefresh = () => {
+		this.setState({ refreshing: true });
+		this.getData().then(data => this.setState({ refreshing: false }))
+	}
+
 	contentGenerator = () => {
+		let RenderComponnent = TouchableOpacity
+		if (this.props.static && this.props.static == true) {
+			RenderComponnent = View
+		}
+
+
 		if (this.state.data) {
 			return (this.state.data.length == 0 && (
 				<ListItem bottomDivider>
@@ -52,7 +69,7 @@ class ListView extends Component {
 					return (
 						<ListItem key={entrie_data.key || index} style={styles.field_container} bottomDivider>
 
-							<TouchableOpacity
+							<RenderComponnent
 								onPress={navigate_function}
 								style={[styles.field_data_title, entrie_data.leftStyle]}>
 								{
@@ -70,7 +87,7 @@ class ListView extends Component {
 										</ListItem.Title>
 									)
 								}
-							</TouchableOpacity>
+							</RenderComponnent>
 							{
 								subtitle && (
 									<ListItem.Subtitle style={[entrie_data.rightStyle]}>

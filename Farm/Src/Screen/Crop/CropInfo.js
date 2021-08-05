@@ -1,5 +1,5 @@
 import React, {
-    useState
+    useState, useCallback
 } from 'react'
 import {
     ScrollView,
@@ -7,6 +7,7 @@ import {
     View,
     StyleSheet,
     Image,
+    RefreshControl
 } from 'react-native'
 
 import axiosInstance from '../../Context/Axios'
@@ -22,12 +23,13 @@ export default function CropInfo(props) {
     const cropUUID = props.cropUUID || (props.route && props.route.params.cropUUID)
 
     const [hasCrop, setHasCrop] = useState(false)
+    const [rerender, setRerender] = useState(false)
+    const [harvested, setHarvesetd] = useState(true)
     const [_cropUUID, setCropUUID] = useState()
     const get_data = async () => {
         let data;
-        
-        if (detail)
-        { 
+
+        if (detail) {
             data = await axiosInstance.get("/api/farms/fields/crops/get", { params: { uuid: cropUUID } })
                 .then(resp => {
                     return resp.data.data
@@ -39,13 +41,15 @@ export default function CropInfo(props) {
                     return resp.data.data
                 })
 
+
         return handleData(data)
     }
 
     const handleData = (data) => {
         if (!data) return []
         setHasCrop(true)
-        console.log('check',data)
+        console.log('check', data)
+        setHarvesetd(data.state == "HARVESTED")
         setCropUUID(data.uuid)
         return [
             { key: 'image', value: data.production.image },
@@ -92,14 +96,43 @@ export default function CropInfo(props) {
     }
 
 
+    const handleHarvest = () => {
+        axiosInstance.get('/api/farms/fields/crops/harvest', { params: { uuid: cropUUID } }).then(
+            async (data) => {
+                await setHarvesetd(true)
+                setRerender(!rerender)
+            }
+        )
+    }
+
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        get_data().then(async () => {
+            await setRerender(!rerender)
+            setRefreshing(false)
+        });
+    }, []);
+
+    console.log(props)
+
     return (
-        <ScrollView>
+        <ScrollView
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />
+            }>
             <ListView
+                static={true}
                 get_data={get_data}
                 map_function={map_function}
+                reRender={rerender}
             />
 
-            {!detail &&
+            {(!detail &&
                 (hasCrop && (
                     <Button
                         buttonStyle={{ alignSelf: 'center', marginTop: 10 }}
@@ -112,7 +145,15 @@ export default function CropInfo(props) {
                             textContent={'New crop'}
                             onPress={() => { props.navigation.push('CreateCrop', { fieldUUID: fieldUUID }) }}
                         />
-                    ))
+                    ))) || (
+                    !harvested && (
+                        <Button
+                            textContent={'Harvest'}
+                            buttonStyle={{ alignSelf: 'center', marginTop: 10, marginBottom: 10 }}
+                            onPress={handleHarvest}
+                        />
+                    )
+                )
             }
         </ScrollView>
     )

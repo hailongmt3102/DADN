@@ -12,6 +12,7 @@ crop_url_patterns = [
     path('/matrix',crop_api.crop_matrix),
     path('/get',crop_api.crop_get),
     path('/create',crop_api.crop_create),
+    path('/harvest',crop_api.harvest_crop),
 ]
 
 sensor_url_patterns = [

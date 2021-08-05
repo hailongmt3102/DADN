@@ -6,6 +6,8 @@ from field.models import Field, Crop
 from field.permissions import is_field_related, is_crop_related
 from utils.views import response_gen
 from product.models import Production
+from core.enums import CropState
+import datetime
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def field_active_crop(request, *args, **kargs):
@@ -61,4 +63,21 @@ def crop_create(request, *args, **kargs):
     
     return response_gen(CropProductionSerialzier(crop).data)
 
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def harvest_crop(request, *args, **kargs):
+    crop_uuid = request.query_params.get('uuid', None)
+    
+    crop :Crop= Crop.objects.get(uuid=crop_uuid)
+    if not is_crop_related(request.user, crop): raise exceptions.PermissionDenied()
+    state = crop.state
+
+    if state == CropState.HARVESTED:
+        raise exceptions.PermissionDenied()
+
+    crop.state = CropState.HARVESTED
+    crop.harvested_at = datetime.datetime.now()
+    crop.save()
+    
+    return response_gen(CropProductionSerialzier(crop).data)
 
